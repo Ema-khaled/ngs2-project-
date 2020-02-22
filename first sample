@@ -1,3 +1,9 @@
+Create the conda env if you have not already did
+conda create -y --name project python=3.6
+conda activate ngs1 
+
+Downloading data
+
 #fist sample
 
 mkdir -p ~/workdir/NGS2_Project/ first_sample_data && cd ~/workdir/NGS2_Project/first_sample_data
@@ -6,4 +12,4 @@ wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos1/sra-pub-run-1/SRR8241115/
 wget https://sra-download.st-va.ncbi.nlm.nih.gov/sos2/sra-pub-run-3/SRR8241115/SRR8241115.1
 
 #download reference
-wget https://www.ncbi.nlm.nih.gov/assembly/37871
+wget https://www.ncbi.nlm.nih.gov/assembly/37871 (whole  exome reference) 
