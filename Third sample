@@ -10,5 +10,9 @@ for f in ~/ngs2project/fqData3/*.fq.gz;do fastqc -t 1 -f fastq -noextract $f;don
 mv ../fqData3/*html ./
 mv ../fqData3/*zip ./
 multiqc -z -o . .
+#Dwanload referance "chro17"
+mkdir -p ~/ngs2project/genomref && cd ~/ngs2project/genomref
+wget https://www.ncbi.nlm.nih.gov/nuccore/CM000679.1?report=fasta
+#genome indexing 
 
 
