@@ -1,2 +1,14 @@
 conda activate ngs1
-wget 
+#download data for the third sample 
+wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos1/sra-pub-run-1/SRR8241116/SRR8241116.1	
+wget	https://sra-download.st-va.ncbi.nlm.nih.gov/sos2/sra-pub-run-3/SRR8241116/SRR8241116.1
+#check the quality of the downloaded data "fastaQC" 
+mkdir -p ~/ngs2project/fqData3 && cd ~/ngs2project/fqData3
+conda install -c bioconda fastqc 
+conda install -c bioconda multiqc 
+for f in ~/ngs2project/fqData3/*.fq.gz;do fastqc -t 1 -f fastq -noextract $f;done
+mv ../fqData3/*html ./
+mv ../fqData3/*zip ./
+multiqc -z -o . .
+
+
