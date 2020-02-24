@@ -1,17 +1,21 @@
 conda activate ngs1
+
 #download data for the third sample 
 mkdir -p ~/ngs2project/sample_data
 wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos1/sra-pub-run-1/SRR8241116/SRR8241116.1	
 wget	https://sra-download.st-va.ncbi.nlm.nih.gov/sos2/sra-pub-run-3/SRR8241116/SRR8241116.1
+
 #check the quality of the data "fastaQC" using fastqc& multiqc tools 
 mkdir -p ~/ngs2project/fqData3 && cd ~/ngs2project/fqData3
 conda install -c bioconda fastqc 
 conda install -c bioconda multiqc 
 for f in ~/ngs2project/fqData3/*.fq.gz;do fastqc -t 1 -f fastq -noextract $f;done
+
 #multiqc report 
 mv ../fqData3/*html ./
 mv ../fqData3/*zip ./
 multiqc -z -o . .
+
 #triming for increase the quality of the data using trimmomatic tool
 conda install -c bioconda trimmomatic 
 mkdir -p ~/ngs2project/trimmed3 && cd ~/ngs2project/trimmed3 
@@ -20,11 +24,28 @@ mkdir -p ~/ngs2project/trimmed3 && cd ~/ngs2project/trimmed3
 mkdir -p ~/ngs2project/genomref && cd ~/ngs2project/genomref
 wget https://www.ncbi.nlm.nih.gov/nuccore/CM000679.1?report=fasta
 gunzip dog_chr5.fa.gz
+
 #genome indexing to spead up the alinment process
 mkdir -p ~/ngs2project/bwa_align/bwaIndex && cd ~/ngs2project/bwa_align/bwaIndex
 ln -s ~/ngs2project/genomref/dog_chr5.fa .
 bwa index -a bwtsw dog_chr5.fa
-#sequance alignment 
+
+#sequance alignment using BWA
+cd ~/workdir/bwa_align
+R1="$HOME/ngs2project/fqData3/BD143_TGACCA_L005_R1_001.pe.fq.gz"
+R2="$HOME/ngs2project/fqData3/BD143_TGACCA_L005_R2_001.pe.fq.gz"
+/usr/bin/time -v bwa mem bwaIndex/dog_chr5.fa $R1 $R2 > BD143_TGACCA_L005.sam
+
+#convert SAM to BAM file using samtools
+conda install -y samtools
+samtools view -S -b BD143_TGACCA_L005.sam -o BD143_TGACCA_L005.bam
+
+# Sorting the BAM file
+samtools sort BD143_TGACCA_L005.bam -o sorted_BD143_TGACCA_L005.bam
+
+# Indexing the BAM file
+samtools index sorted_BD143_TGACCA_L005.bam
+#generate PseudoBAM
 
 
 
