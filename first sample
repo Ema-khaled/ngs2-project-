@@ -1,6 +1,7 @@
 Create the conda env if you have not already did
 conda create -y --name project python=3.6
 conda activate ngs1 
+mkdir -p ~/NGS2_Project/first_sample_data && cd ~/NGS2_Project/first_sample_data
 
 Downloading data
 #coudnt dowenlode our samples using that link  https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?study=SRP170630 
@@ -8,13 +9,13 @@ then from sra as sra format and then convert it to fastq
 
 #to  dowenlode sra samples  then convert it to fastaQ (paired) 
  conda install -c bioconda sra-tools 
- prefetch SRR8241115 
+ prefetch SRR8241115  
  
 
-mkdir -p ~/NGS2_Project/first_sample_data && cd ~/NGS2_Project/first_sample_data
+
 #download sample
-wget https://www.ncbi.nlm.nih.gov//biosample/SAMN10474016/101228_I433_FC812MDABXX_L8_HUMrmoXDTABAPEI-1_1.clean.fq.gz
-wget https://sra-download.st-va.ncbi.nlm.nih.gov/sos2/sra-pub-run-3/SRR8241115/SRR8241115.1
+#wget https://www.ncbi.nlm.nih.gov//biosample/SAMN10474016/101228_I433_FC812MDABXX_L8_HUMrmoXDTABAPEI-1_1.clean.fq.gz
+#wget https://sra-download.st-va.ncbi.nlm.nih.gov/sos2/sra-pub-run-3/SRR8241115/SRR8241115.1
 
 #download reference
-wget https://www.ncbi.nlm.nih.gov/assembly/37871 (whole  exome reference) 
+wget https://www.ncbi.nlm.nih.gov/assembly/37871 (whole  exome reference)   
