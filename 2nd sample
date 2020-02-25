@@ -26,6 +26,6 @@ $ ls -tral /home/ngs/workdir/fqData/SRR8241113/SRR8241113.sra
 $ fastq-dump SRR8241113/SRR8241113.sra
 
 .....
-## By Looking at the downloaded fastq file, we can see it is completed:
-$ ls -l SRR8241113.fastq
-....
+## By Looking at the downloaded fastq file, we can see it is completed and it is abot 14 GB!!:
+$ ls -tral SRR8241113.fastq
+-rw-rw-r-- 1 ngs ngs 14172139840 Feb 25 23:35 SRR8241113.fastq
