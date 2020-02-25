@@ -6,7 +6,7 @@ wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos1/sra-pub-run-1/SRR8241116/
 wget https://sra-download.st-va.ncbi.nlm.nih.gov/sos2/sra-pub-run-3/SRR8241116/SRR8241116.1
 #convert data format from SRA to fastq "the first problem i have faced"
 conda install -c bioconda sra-tools
-
+fastq-dump ~/ngs2project/sample_data
 
 #check the quality of the data "fastaQC" using fastqc& multiqc tools 
 mkdir -p ~/ngs2project/fqData3 && cd ~/ngs2project/fqData3
