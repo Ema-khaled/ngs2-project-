@@ -7,7 +7,11 @@ conda activate ngs1
 ##Sequence Alignment
   #1-Download the reference file (human genome) from https://www.ncbi.nlm.nih.gov/assembly and put it in:
 mkdir -p ~/workdir/sample_data && cd ~/workdir/sample_data
-  #2-Download the secound sample_data Fastq files (the accession:SRX5059368, ILLUMINA (Illumina HiSeq 2000) run: 29.5M spots, 5.3G bases, 2.7Gb downloads):
+
+  #2-Download the secound sample_data Fastq files (the accession:SRX5059368,the run: SRR8241113, ILLUMINA (Illumina HiSeq 2000) run: 29.5M spots, 5.3G bases, 2.7Gb downloads):
 mkdir -p ~/workdir/fqData && cd ~/workdir/fqData
+conda install -c bioconda sra-tools
+prefetch SRR8241113
+
  	wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos1/sra-pub-run-1/SRR8241113/SRR8241113.1
   wget https://sra-download.st-va.ncbi.nlm.nih.gov/sos2/sra-pub-run-3/SRR8241113/SRR8241113.1
