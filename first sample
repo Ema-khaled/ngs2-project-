@@ -7,10 +7,16 @@ Downloading data
 #coudnt dowenlode our samples using that link  https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?study=SRP170630 
 then from sra as sra format and then convert it to fastq 
 
-#to  dowenlode sra samples  then convert it to fastaQ (paired) 
+#to  dowenlode sra samples  then convert it to fastaq (paired) 
  conda install -c bioconda sra-tools 
  prefetch SRR8241115  
+ fastq-dump SRR8241115
+# apear just one fastaq file  
+# search on Biostar for that issue resulting after several terying to use thi code  using that link  https://www.biostars.org/p/376434/
  
+fastq-dump --split-files SRR8241115 
+# so i downlode the samples again from  sra data acess with 2 links 
+# and convert it also to fastaq using fastq-dump  
 
 
 #download sample
