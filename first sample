@@ -24,4 +24,6 @@ fastq-dump --split-files SRR8241115
 #wget https://sra-download.st-va.ncbi.nlm.nih.gov/sos2/sra-pub-run-3/SRR8241115/SRR8241115.1
 
 #download reference
-wget https://www.ncbi.nlm.nih.gov/assembly/37871 (whole  exome reference)   
+#wget https://www.ncbi.nlm.nih.gov/assembly/37871
+#downloade (whole  exome reference)  
+ wget ftp://ftp.ensembl.org/pub/release-99/fasta/homo_sapiens/cds/Homo_sapiens.GRCh38.cds.all.fa.gz
