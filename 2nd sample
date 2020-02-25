@@ -11,7 +11,9 @@ mkdir -p ~/workdir/sample_data && cd ~/workdir/sample_data
   #2-Download the secound sample_data Fastq files (the accession:SRX5059368,the run: SRR8241113, ILLUMINA (Illumina HiSeq 2000) run: 29.5M spots, 5.3G bases, 2.7Gb downloads):
 mkdir -p ~/workdir/fqData && cd ~/workdir/fqData
 conda install -c bioconda sra-tools
+##To download the run by accession using prefetch (The actual file will be downloaded to the cache area in my filesystem):
 prefetch SRR8241113
-
- 	wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos1/sra-pub-run-1/SRR8241113/SRR8241113.1
-  wget https://sra-download.st-va.ncbi.nlm.nih.gov/sos2/sra-pub-run-3/SRR8241113/SRR8241113.1
+srapath SRR8241113
+ls -l /home/you/ncbi/public/sra/SRR8241113.sra
+## Now we will convert the downloaded runs to fastq:
+ 	sff-dump SRR8241113
