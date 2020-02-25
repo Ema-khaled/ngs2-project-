@@ -7,21 +7,25 @@ $ conda activate ngs1
 ##Sequence Alignment
   #1-Download the reference file (human genome) from https://www.ncbi.nlm.nih.gov/assembly and put it in:
 $ mkdir -p ~/workdir/sample_data && cd ~/workdir/sample_data
-
+https://www.ncbi.nlm.nih.gov/genome/guide/human/
   #2-Download the secound sample_data Fastq files (the accession:SRX5059368,the run: SRR8241113, ILLUMINA (Illumina HiSeq 2000) run: 29.5M spots, 5.3G bases, 2.7Gb downloads):
 $ mkdir -p ~/workdir/fqData && cd ~/workdir/fqData
 $ conda install -c bioconda sra-tools
 ##To download the run by accession using prefetch (The actual file will be downloaded to the cache area in my filesystem):
 $ prefetch SRR8241113
-......
-$ srapath SRR8241113.sra
-....
-The run file is compressed, occupying on disk about:
-$ ls -l /home/you/ncbi/public/sra/SRR8241113.sra
-......
-## Now we will convert the downloaded runs to fastq:
-$ fastq-dump SRR8241113.sra
+
+## To Know the path of the downloaded runs:
+$ srapath SRR8241113a
+/home/ngs/workdir/fqData/SRR8241113/SRR8241113.sra
+
+##The run file is compressed, occupying on disk about 2911751441 (about 3 GB):
+$ ls -tral /home/ngs/workdir/fqData/SRR8241113/SRR8241113.sra
+-rw-rw-r-- 1 ngs ngs 2911751441 Feb 25 23:20 /home/ngs/workdir/fqData/SRR8241113/SRR8241113.sra
+
+## Now we will convert the downloaded runs to a fastq file formate via the following command:
+$ fastq-dump SRR8241113/SRR8241113.sra
+
 .....
-## By Looking at the downloaded fastq file, we can see it is complete:
+## By Looking at the downloaded fastq file, we can see it is completed:
 $ ls -l SRR8241113.fastq
 ....
