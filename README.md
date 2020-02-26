@@ -5,4 +5,4 @@ Third sample done by Yomna....(ID=...)
 
 For Shimaa files, please reads in the following sequences:
 1-2nd sample
-2-2-Shimaa_multiqc_report
+2-2-Shimaa_fastqc_multiqc_report
