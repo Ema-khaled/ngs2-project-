@@ -7,6 +7,10 @@ $ conda activate ngs1
 ##Sequence Alignment
   #1-Download the reference file (human genome) from https://www.ncbi.nlm.nih.gov/genome/guide/human/ and ubload it in the following directory:
 $ mkdir -p ~/workdir/sample_data && cd ~/workdir/sample_data
+$ gunzip GRCh38_latest_genomic.fna.gz
+## By Looking at the downloaded fasta file, we can see it is completed and it is abot 4 GB!!:
+$ ls -tral GRCh38_latest_genomic.fna
+-rw-rw-r-- 1 ngs ngs 3313061631 Feb 25 23:53 GRCh38_latest_genomic.fna
 
   #2-Download the secound sample_data Fastq files (the accession:SRX5059368,the run: SRR8241113, ILLUMINA (Illumina HiSeq 2000) run: 29.5M spots, 5.3G bases, 2.7Gb downloads):
 $ mkdir -p ~/workdir/fqData && cd ~/workdir/fqData
