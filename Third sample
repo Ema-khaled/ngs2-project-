@@ -7,7 +7,7 @@ wget https://sra-download.st-va.ncbi.nlm.nih.gov/sos2/sra-pub-run-3/SRR8241116/S
 
 #After exploring the data it didn't make sense so i traied another way to downlaod this data using sra-toolkit
 conda install -c bioconda sra-tools
- fastq-dump -I --split-files SRR8241116
+ fastq-dump -I --split-files --gzip SRR8241116
 # Produces two fastq files (--split-files) containing ".1" and ".2" read suffices (-I) for paired-end data
 
 #check the quality of the data "fastaQC" using fastqc& multiqc tools 
@@ -27,8 +27,7 @@ mkdir -p ~/ngs2project/trimmed3 && cd ~/ngs2project/trimmed3
 
 #Dwanload referance "chro17"
 mkdir -p ~/ngs2project/genomref && cd ~/ngs2project/genomref
-wget https://www.ncbi.nlm.nih.gov/nuccore/CM000679.1?report=fasta
-gunzip dog_chr5.fa.gz
+wget ftp://ftp.ensembl.org/pub/release-99/fasta/homo_sapiens/cds/Homo_sapiens.GRCh38.cds.all.fa.gz
 
 #genome indexing to spead up the alinment process
 mkdir -p ~/ngs2project/bwa_align/bwaIndex && cd ~/ngs2project/bwa_align/bwaIndex
