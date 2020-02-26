@@ -1,18 +1,18 @@
 Hello everybody, the following is the scripts or steps for variant calling:
 
-## create and activate the conda env if you did not have it:
+                               ## create and activate the conda env if you did not have it:
 $ conda create -y --name ngs1 python=3.6
 $ conda activate ngs1
 
-##Sequence Alignment
-  #1-Download the reference file (human genome) from https://www.ncbi.nlm.nih.gov/genome/guide/human/ and ubload it in the following directory:
+                                                ##Sequence Alignment
+#1-Download the reference file (human genome) from https://www.ncbi.nlm.nih.gov/genome/guide/human/ and ubload it in the following directory:
 $ mkdir -p ~/workdir/sample_data && cd ~/workdir/sample_data
 $ gunzip GRCh38_latest_genomic.fna.gz
 ## By Looking at the downloaded fasta file, we can see it is completed and it is about 4 GB!!:
 $ ls -tral GRCh38_latest_genomic.fna
 -rw-rw-r-- 1 ngs ngs 3313061631 Feb 25 23:53 GRCh38_latest_genomic.fna
 
-  #2-Download the secound sample_data Fastq files (the accession:SRX5059368,the run: SRR8241113, ILLUMINA (Illumina HiSeq 2000) run: 29.5M spots, 5.3G bases, 2.7Gb downloads):
+#2-Download the secound sample_data Fastq files (the accession:SRX5059368,the run: SRR8241113, ILLUMINA (Illumina HiSeq 2000) run: 29.5M spots, 5.3G bases, 2.7Gb downloads):
 $ mkdir -p ~/workdir/fqData && cd ~/workdir/fqData
 
 ##To download the run by accession using prefetch (The actual file will be downloaded to the cache area in my filesystem):
@@ -27,20 +27,8 @@ $ srapath SRR8241113
 $ ls -tral /home/ngs/workdir/fqData/SRR8241113/SRR8241113.sra
 -rw-rw-r-- 1 ngs ngs 2911751441 Feb 25 23:20 /home/ngs/workdir/fqData/SRR8241113/SRR8241113.sra
 
-## Now we will convert the downloaded runs to a fastq file formate via the following command:
-$ fastq-dump SRR8241113/SRR8241113.sra
-
-## By Looking at the downloaded fastq file by ls -tral, we can see it is completed and it is about 14 GB!!:
-$ ls -tral SRR8241113.fastq
--rw-rw-r-- 1 ngs ngs 14172139840 Feb 25 23:35 SRR8241113.fastq
-
-## By Looking at the downloaded fastq file by head, we can see the following sequences:
-@SRR8241113.1 B812MDABXX:7:1:1323:2022 length=180
-TGGAGACCCGGGACAATTCATTCCGTGGCCTAGAGAAACAAAAGCACTCATTATTCACCTGGGACCTGTAAGATAAGGAGCTCACAGTGGAAGACTAAGGAGACAAGCGTCAACTGGTGTCTGGCTGATGGCTATGACCTGGAGATCCTGGACGGTACCAGAGGCACTGTGGATGGGGAA
-+SRR8241113.1 B812MDABXX:7:1:1323:2022 length=180
-FHHHGEHHHHHHHHGHHHHHHHHHFHHEHHHHHHEEFHHFHEGHHHHHHFHBGHFFFHHHF?EFFFHHFEDFEBGGFEECEBGGGGG?EBHHHHHHHHHHHEHEHFEHHEHHHHEFGCFBGFGGDFGC@HFHCHEFFFCEGGFBF@DDA:EEE>B4DEBDDC<BCD<0A77D########
-@SRR8241113.2 B812MDABXX:7:1:1428:2046 length=180
-
-## By Looking at the downloaded fastq file by wc -l, we can see that it contains 117900572 lines:
-$ wc -l SRR8241113.fastq
-117900572 SRR8241113.fastq
+##Produces two fastq files (--split-files) containing ".1" and ".2" read suffices (-I) for paired-end data: 
+$ fastq-dump --split-files SRR8241113
+$ ls -tral (The two reads files occupying on disk about 8807663814 for each read (about 9 GB each):
+-rw-rw-r-- 1 ngs ngs 8807663814 Feb 26 10:01  SRR8241113_2.fastq
+-rw-rw-r-- 1 ngs ngs 8807663814 Feb 26 10:01  SRR8241113_1.fastq
