@@ -128,6 +128,16 @@ newf1U="$HOME/workdir/fqData/SRR8241113_1.se.trim.fastq"
 newf2U="$HOME/workdir/fqData/SRR8241113_1.se.trim.fastq"
 adap="$CONDA_PREFIX/share/trimmomatic-0.39-1/adapters"
 
+## To Run trimmomatic:
+# First let us go to understand its option:
+$ trimmomatic -h
+Usage: 
+PE [-version] [-threads <threads>] [-phred33|-phred64] [-trimlog <trimLogFile>] [-summary <statsSummaryFile>] [-quiet] [-validatePairs] [-basein <inputBase> | <inputFile1> <inputFile2>] [-baseout <outputBase> | <outputFile1P> <outputFile1U> <outputFile2P> <outputFile2U>] <trimmer1>...
+#Note that: in SLIDINGWINDOW, when you found 4 nucleotide it is average error 15 cut it
+            MINLEN: it is the minimum length
+# Now let us go to run trimmomatic:
+$ trimmomatic PE -threads 1 -phred33 -trimlog trimLogFile -summary statsSummaryFile  $f1 $f2 $newf1 $newf1U $newf2 $newf2U \
+ILLUMINACLIP:$adap/TruSeq3-PE.fa:2:30:10:1 SLIDINGWINDOW:4:15 MINLEN:36
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
