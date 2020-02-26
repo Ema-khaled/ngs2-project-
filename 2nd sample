@@ -1,10 +1,10 @@
 Hello everybody, the following is the scripts or steps for variant calling:
 
-                               ## create and activate the conda env if you did not have it:
+## create and activate the conda env if you did not have it:
 $ conda create -y --name ngs1 python=3.6
 $ conda activate ngs1
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-                                                ##Sequence Alignment
 #1-Download the reference file (human genome) from https://www.ncbi.nlm.nih.gov/genome/guide/human/ and ubload it in the following directory:
 $ mkdir -p ~/workdir/sample_data && cd ~/workdir/sample_data
 $ gunzip GRCh38_latest_genomic.fna.gz
@@ -14,9 +14,9 @@ $ ls -tral GRCh38_latest_genomic.fna
 ## I noticed that it is downloaded in the fna formate and to be sure that it is a fasta formate, I will use the SeqKit
 ##SeqKit: is the cross-platform and ultrafast toolkit for FASTA/Q file manipulation
 ## for more information about SeqKit, please visit: https://bioinf.shenwei.me/seqkit/usage/
-
 $ conda install -c bioconda seqkit
 $ cd ..
+
 ## now we could explore our reference human genome using the following commands:
 $ seqkit stat sample_data/GRCh38_latest_genomic.fna
 file                                   format  type  num_seqs        sum_len  min_len      avg_len      max_len
@@ -31,6 +31,7 @@ NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #2-Download the sample_data Fastq files (the secound data in our bioproject) (the accession:SRX5059368,the run: SRR8241113, ILLUMINA (Illumina HiSeq 2000) run: 29.5M spots, 5.3G bases, 2.7Gb downloads):
 $ mkdir -p ~/workdir/fqData && cd ~/workdir/fqData
@@ -52,6 +53,7 @@ $ fastq-dump --split-files SRR8241113
 $ ls -tral (The two reads files occupying on disk about 8807663814 for each read (about 9 GB each):
 -rw-rw-r-- 1 ngs ngs 8807663814 Feb 26 10:01  SRR8241113_2.fastq
 -rw-rw-r-- 1 ngs ngs 8807663814 Feb 26 10:01  SRR8241113_1.fastq
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #3-visualizes the quality of the data using FASTQC
 ##Note: FASTQC does not perform quality control: it only visualizes the quality of the data.
@@ -107,12 +109,27 @@ $ ls -tral
       # On the top left of the multiqc_report.html tab header, click on Trust HTML
    # Trust HTML to load and explore them
    ##all data were of high quality.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#3-Trimmomatic application to Cut the adapter and other illumina-specific sequences from the data reads according to their quality scores
+##Trimmomatric is an easy application and have an access to the illumina reads. Trimmomatric will align the technical sequences (all artificial sequences used by ilumina during library preparation) on my reads sequence; if they aligned (means chimeric reaction), Trimmomatric will remove these reads
+##Install the software
+$ conda activate ngs1
+$ conda install -c bioconda trimmomatic 
+##Run Trimmomatic
+## 1. Create practicing directory
+mkdir -p ~/workdir/trimmed && cd ~/workdir/trimmed 
+## 2. Set environmental variables
+$
+f1="$HOME/workdir/fqData/SRR8241113_1.fastq"
+f2="$HOME/workdir/fqData/SRR8241113_2.fastq"
+newf1="$HOME/workdir/fqData/SRR8241113_1.trim.fastq"
+newf2="$HOME/workdir/fqData/SRR8241113_2.trim.fastq"
+adap="$CONDA_PREFIX/share/trimmomatic-0.39-1/adapters"
 
 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
-
+##Sequence Alignment
 
 
 
