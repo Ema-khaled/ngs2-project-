@@ -59,9 +59,27 @@ $ ls -tral
 -rw-rw-r-- 1 ngs ngs 235198 Feb 26 12:38 SRR8241113_2_fastqc.html
 
 So I found that the storage spaces are : 260091 and 261625 for SRR8241113_1_fastqc.zip and SRR8241113_2_fastqc.zip respectively.
+##Trust HTML to load and explore them: all data were of high quality.
 
 ## Now I will Merge the output reports into one super report
+$ cd ..
+$ cd FASTQC_tut/
+$ mv ../fqData/*html ./
+$ mv ../fqData/*zip ./
+## Using multiqc for merging the two html files 
+$ multiqc -h > multiqc_help
+(Note from multiqc_help page: -z compress and it will be here in the current directory, -o the output will be here in the current directory, the last . is the working directory)
+-z, --zip-data-dir              Compress the data directory.
+-o, --outdir TEXT               Create report in the specified output
+                                  directory.
 
-mv ../fqData/*html ./
-mv ../fqData/*zip ./
-multiqc -z -o . .
+$ multiqc -z -o . .
+$ ls -tral
+-rw-rw-r-- 1 ngs ngs 1151987 Feb 26 14:12  multiqc_report.html
+-rw-rw-r-- 1 ngs ngs   13073 Feb 26 14:12  multiqc_data.zip
+##Trust HTML to load and explore them: all data were of high quality.
+
+
+
+
+
