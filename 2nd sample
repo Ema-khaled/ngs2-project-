@@ -11,8 +11,29 @@ $ gunzip GRCh38_latest_genomic.fna.gz
 ## By Looking at the downloaded fasta file, we can see it is completed and it is about 4 GB!!:
 $ ls -tral GRCh38_latest_genomic.fna
 -rw-rw-r-- 1 ngs ngs 3313061631 Feb 25 23:53 GRCh38_latest_genomic.fna
+## I noticed that it is downloaded in the fna formate and to be sure that it is a fasta formate, I will use the SeqKit
+##SeqKit: is the cross-platform and ultrafast toolkit for FASTA/Q file manipulation
+## for more information about SeqKit, please visit: https://bioinf.shenwei.me/seqkit/usage/
 
-#2-Download the secound sample_data Fastq files (the accession:SRX5059368,the run: SRR8241113, ILLUMINA (Illumina HiSeq 2000) run: 29.5M spots, 5.3G bases, 2.7Gb downloads):
+$ conda install -c bioconda seqkit
+## now we could explore our reference human genome:
+$ cd ..
+
+$ seqkit stat sample_data/*
+file                                   format  type  num_seqs        sum_len  min_len      avg_len      max_len
+sample_data/GRCh38_latest_genomic.fna  FASTA   DNA        639  3,272,089,205      970  5,120,640.4  248,956,422
+
+## GC content: seqkit fx2tab coverts FASTA/Q to 3-column tabular format (1st: name/ID, 2nd: sequence, 3rd: quality), and can also provide various information in new columns, including sequence length, GC content/GC skew, alphabet
+seqkit fx2tab --name --only-id --gc sample_data/hairpin.fa.gz
+
+
+
+
+
+
+
+
+#2-Download the sample_data Fastq files (the secound data in our bioproject) (the accession:SRX5059368,the run: SRR8241113, ILLUMINA (Illumina HiSeq 2000) run: 29.5M spots, 5.3G bases, 2.7Gb downloads):
 $ mkdir -p ~/workdir/fqData && cd ~/workdir/fqData
 
 ##To download the run by accession using prefetch (The actual file will be downloaded to the cache area in my filesystem):
@@ -87,6 +108,16 @@ $ ls -tral
       # On the top left of the multiqc_report.html tab header, click on Trust HTML
    # Trust HTML to load and explore them
    ##all data were of high quality.
+
+
+
+
+
+
+
+
+
+
 
 
 
