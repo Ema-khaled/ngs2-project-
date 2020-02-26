@@ -49,5 +49,13 @@ fastqc -h > fastqc_hlp
 less fastqc_hlp
 
 ##Run the FASTQC for each read end
-$ for f in ~/workdir/fqData/*.fastq;do fastqc -f fastq -noextract $f;done
+$ for f in ~/workdir/fqData/*.fastq;do fastqc -f fastq $f;done
+$ ls -tral
+-rw-rw-r-- 1 ngs ngs 8807663814 Feb 26 10:01 SRR8241113_2.fastq
+-rw-rw-r-- 1 ngs ngs 8807663814 Feb 26 10:01 SRR8241113_1.fastq
+-rw-rw-r-- 1 ngs ngs 260091 Feb 26 12:35 SRR8241113_1_fastqc.zip
+-rw-rw-r-- 1 ngs ngs 233962 Feb 26 12:35 SRR8241113_1_fastqc.html
+-rw-rw-r-- 1 ngs ngs 261625 Feb 26 12:38 SRR8241113_2_fastqc.zip
+-rw-rw-r-- 1 ngs ngs 235198 Feb 26 12:38 SRR8241113_2_fastqc.html
 
+So I found that the storage spaces are : 260091 and 261625 for SRR8241113_1_fastqc.zip and SRR8241113_2_fastqc.zip respectively.
