@@ -4,6 +4,6 @@ First sample done by Eman....(ID=...)
 Third sample done by Yomna....(ID=...)
 
 
-For Shimaa files, please reads in the following consequencies:
+For Shimaa files, please reads in the following sequences:
 1-2nd sample
 2-
