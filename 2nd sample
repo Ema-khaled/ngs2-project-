@@ -82,8 +82,9 @@ $ ls -tral
 
    # Open jupyter
    # Browse to ~/workdir/FASTQC_tut
-   # Double click on the file multiqc_report.html
-   # On the top left of the multiqc_report.html tab header, click on Trust HTML
+   # Double click on the file multiqc_report.html:
+   file:///home/shimaa/Downloads/multiqc_report.html
+      # On the top left of the multiqc_report.html tab header, click on Trust HTML
    # Trust HTML to load and explore them
    ##all data were of high quality.
 
