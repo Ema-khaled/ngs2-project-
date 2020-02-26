@@ -59,3 +59,9 @@ $ ls -tral
 -rw-rw-r-- 1 ngs ngs 235198 Feb 26 12:38 SRR8241113_2_fastqc.html
 
 So I found that the storage spaces are : 260091 and 261625 for SRR8241113_1_fastqc.zip and SRR8241113_2_fastqc.zip respectively.
+
+## Now I will Merge the output reports into one super report
+
+mv ../fqData/*html ./
+mv ../fqData/*zip ./
+multiqc -z -o . .
