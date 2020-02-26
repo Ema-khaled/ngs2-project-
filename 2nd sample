@@ -122,8 +122,10 @@ mkdir -p ~/workdir/trimmed && cd ~/workdir/trimmed
 $
 f1="$HOME/workdir/fqData/SRR8241113_1.fastq"
 f2="$HOME/workdir/fqData/SRR8241113_2.fastq"
-newf1="$HOME/workdir/fqData/SRR8241113_1.trim.fastq"
-newf2="$HOME/workdir/fqData/SRR8241113_2.trim.fastq"
+newf1="$HOME/workdir/fqData/SRR8241113_1.pe.trim.fastq"
+newf2="$HOME/workdir/fqData/SRR8241113_2.pe.trim.fastq"
+newf1U="$HOME/workdir/fqData/SRR8241113_1.se.trim.fastq"
+newf2U="$HOME/workdir/fqData/SRR8241113_1.se.trim.fastq"
 adap="$CONDA_PREFIX/share/trimmomatic-0.39-1/adapters"
 
 
