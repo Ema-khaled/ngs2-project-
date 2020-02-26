@@ -16,21 +16,20 @@ $ ls -tral GRCh38_latest_genomic.fna
 ## for more information about SeqKit, please visit: https://bioinf.shenwei.me/seqkit/usage/
 
 $ conda install -c bioconda seqkit
-## now we could explore our reference human genome:
 $ cd ..
-
-$ seqkit stat sample_data/*
+## now we could explore our reference human genome using the following commands:
+$ seqkit stat sample_data/GRCh38_latest_genomic.fna
 file                                   format  type  num_seqs        sum_len  min_len      avg_len      max_len
 sample_data/GRCh38_latest_genomic.fna  FASTA   DNA        639  3,272,089,205      970  5,120,640.4  248,956,422
 
-## GC content: seqkit fx2tab coverts FASTA/Q to 3-column tabular format (1st: name/ID, 2nd: sequence, 3rd: quality), and can also provide various information in new columns, including sequence length, GC content/GC skew, alphabet
-seqkit fx2tab --name --only-id --gc sample_data/hairpin.fa.gz
-
-
-
-
-
-
+#to explore the sequence
+$ seqkit seq sample_data/GRCh38_latest_genomic.fna | head -6
+>NC_000001.11 Homo sapiens chromosome 1, GRCh38.p13 Primary Assembly
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 
 
 #2-Download the sample_data Fastq files (the secound data in our bioproject) (the accession:SRX5059368,the run: SRR8241113, ILLUMINA (Illumina HiSeq 2000) run: 29.5M spots, 5.3G bases, 2.7Gb downloads):
