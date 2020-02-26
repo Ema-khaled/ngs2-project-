@@ -32,3 +32,22 @@ $ fastq-dump --split-files SRR8241113
 $ ls -tral (The two reads files occupying on disk about 8807663814 for each read (about 9 GB each):
 -rw-rw-r-- 1 ngs ngs 8807663814 Feb 26 10:01  SRR8241113_2.fastq
 -rw-rw-r-- 1 ngs ngs 8807663814 Feb 26 10:01  SRR8241113_1.fastq
+
+#3-visualizes the quality of the data using FASTQC
+##Note: FASTQC does not perform quality control: it only visualizes the quality of the data.
+##Create conda env
+## create the conda env if you have not already did
+$ conda create -y --name ngs1 python=3.6
+##Install the software
+$ conda activate ngs1
+$ conda install -c bioconda fastqc 
+$ conda install -c bioconda multiqc 
+
+##Explore the help of FASTQC
+mkdir -p ~/workdir/FASTQC_tut && cd ~/workdir/FASTQC_tut
+fastqc -h > fastqc_hlp
+less fastqc_hlp
+
+##Run the FASTQC for each read end
+$ for f in ~/workdir/fqData/*.fastq;do fastqc -f fastq -noextract $f;done
+
