@@ -110,12 +110,12 @@ $ ls -tral
    # Trust HTML to load and explore them
    ##all data were of high quality.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#3-Trimmomatic application to Cut the adapter and other illumina-specific sequences from the data reads according to their quality scores
+#3-Trimmomatric application to Cut the adapter and other illumina-specific sequences from the data reads according to their quality scores
 ##Trimmomatric is an easy application and have an access to the illumina reads. Trimmomatric will align the technical sequences (all artificial sequences used by ilumina during library preparation) on my reads sequence; if they aligned (means chimeric reaction), Trimmomatric will remove these reads
 ##Install the software
 $ conda activate ngs1
-$ conda install -c bioconda trimmomatic 
-##Run Trimmomatic
+$ conda install -c bioconda trimmomatric 
+##Run Trimmomatric
 ## 1. Create practicing directory
 mkdir -p ~/workdir/trimmed && cd ~/workdir/trimmed 
 ## 2. Set environmental variables
@@ -128,23 +128,24 @@ newf1U="$HOME/workdir/fqData/SRR8241113_1.se.trim.fastq"
 newf2U="$HOME/workdir/fqData/SRR8241113_1.se.trim.fastq"
 adap="$CONDA_PREFIX/share/trimmomatic-0.39-1/adapters"
 
-## To Run trimmomatic:
+## To Run trimmomatric:
 # First let us go to understand its option:
 $ trimmomatic -h
 Usage: 
 PE [-version] [-threads <threads>] [-phred33|-phred64] [-trimlog <trimLogFile>] [-summary <statsSummaryFile>] [-quiet] [-validatePairs] [-basein <inputBase> | <inputFile1> <inputFile2>] [-baseout <outputBase> | <outputFile1P> <outputFile1U> <outputFile2P> <outputFile2U>] <trimmer1>...
 #Note that: in SLIDINGWINDOW, when you found 4 nucleotide it is average error 15 cut it
             MINLEN: it is the minimum length
-# Now let us go to run trimmomatic:
+# Now let us go to run trimmomatric:
 $ trimmomatic PE -threads 1 -phred33 -trimlog trimLogFile -summary statsSummaryFile  $f1 $f2 $newf1 $newf1U $newf2 $newf2U \
 ILLUMINACLIP:$adap/TruSeq3-PE.fa:2:30:10:1 SLIDINGWINDOW:4:15 MINLEN:36
 
-TrimmomaticPE: Started with arguments:
+
+TrimmomatricPE: Started with arguments:
  -threads 1 -phred33 -trimlog trimLogFile -summary statsSummaryFile /home/ngs/workdir/fqData/SRR8241113_1.fastq /home/ngs/workdir/fqData/SRR8241113_2.fastq /home/ngs/workdir/fqData/SRR8241113_1.pe.trim.fastq /home/ngs/workdir/fqData/SRR8241113_1.se.trim.fastq /home/ngs/workdir/fqData/SRR8241113_2.pe.trim.fastq /home/ngs/workdir/fqData/SRR8241113_1.se.trim.fastq ILLUMINACLIP:/home/ngs/miniconda3/envs/ngs1/share/trimmomatic-0.39-1/adapters/TruSeq3-PE.fa:2:30:10:1 SLIDINGWINDOW:4:15 MINLEN:36
 Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
 ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
 Input Read Pairs: 29475143 Both Surviving: 29184703 (99.01%) Forward Only Surviving: 182819 (0.62%) Reverse Only Surviving: 92586 (0.31%) Dropped: 15035 (0.05%)
-TrimmomaticPE: Completed successfully
+TrimmomatricPE: Completed successfully
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ##Sequence BWA Alignment
