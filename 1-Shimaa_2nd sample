@@ -159,14 +159,32 @@ $ conda install -c bioconda -y bwa
 $ mkdir -p ~/workdir/bwa_align/bwaIndex && cd ~/workdir/bwa_align/bwaIndex
 $ ln -s ~/workdir/sample_data/GRCh38_latest_genomic.fna .
 $ bwa index -a bwtsw GRCh38_latest_genomic.fna
-# we choose bwtsw 	Algorithm for indexing as this method works with the whole human genome.
-# we choose mem as it works almostly in all length
+# I choose bwtsw 	Algorithm for indexing as this method works with the whole human genome.
+# I choose mem as it works almostly in all length
 
 #sequence alignment
 cd ~/workdir/bwa_align
 R1="$HOME/workdir/fqData/SRR8241113_1.pe.trim.fastq"
 R2="$HOME/workdir/fqData/SRR8241113_2.pe.trim.fastq"
 /usr/bin/time -v bwa mem bwaIndex/GRCh38_latest_genomic.fna $R1 $R2 > SRR8241113.sam
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+##Visualize mapping
+
+#install samtools
+#manual webpage: http://www.htslib.org/doc/samtools.html
+conda activate ngs1
+conda install samtools
+
+# Convert the SAM file into a BAM file that can be sorted and indexed:
+samtools view -hbo SRR8241113.bam SRR8241113.sam
+
+# Sort the BAM file by position in genome:
+samtools sort SRR8241113.bam -o SRR8241113.sorted.bam
+
+# Index the BAM file so that we can randomly access it quickly:
+samtools index SRR8241113.sorted.bam
 
 
 
