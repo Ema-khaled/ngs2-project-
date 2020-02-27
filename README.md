@@ -7,3 +7,4 @@ Third sample done by Yomna....(ID=...)
 1-Shimaa_2nd sample
 2-Shimaa_fastqc_multiqc_report
 3-Shimaa_statsSummaryFile
+4-Issues met Shimaa are serially numbered from First to 8th 
