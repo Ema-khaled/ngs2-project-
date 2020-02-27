@@ -180,12 +180,28 @@ conda install samtools
 
 # Convert the SAM file into a BAM file that can be sorted and indexed:
 samtools view -hbo SRR8241113.bam SRR8241113.sam
+#The -b and -h options change the output format from the default of headerless SAM, and the -o option set the output file name. 
 
 # Sort the BAM file by position in genome:
 samtools sort SRR8241113.bam -o SRR8241113.sorted.bam
+#-o FILE: Write the final sorted output to FILE, rather than to standard output.
 
 # Index the BAM file so that we can randomly access it quickly:
 samtools index SRR8241113.sorted.bam
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Visualize mapping using tview in samtools
+
+samtools tview -p chr5:62155107 BD143_TGACCA_L005.sorted.bam bwaIndex/dog_chr5.fa
+
+    Understanding Pileup format should help explaining the symbols in tview
+    In the viewer:
+        press ? for help
+        q to quit
+        CTRL-h and CTRL-l do “big” scrolls
+        g chr5:62167341 will take you to a specific location.
 
 
 
