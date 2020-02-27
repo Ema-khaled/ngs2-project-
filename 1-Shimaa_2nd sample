@@ -147,10 +147,26 @@ Input Read Pairs: 29475143 Both Surviving: 29184703 (99.01%) Forward Only Surviv
 TrimmomaticPE: Completed successfully
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-##Sequence Alignment
+##Sequence BWA Alignment
+#Manual Reference Pages  of bwa:
+http://bio-bwa.sourceforge.net/bwa.shtml
 
+#install bwa
+$ conda activate ngs1
+$ conda install -c bioconda -y bwa
 
+#Index my genome
+$ mkdir -p ~/workdir/bwa_align/bwaIndex && cd ~/workdir/bwa_align/bwaIndex
+$ ln -s ~/workdir/sample_data/GRCh38_latest_genomic.fna .
+$ bwa index -a bwtsw GRCh38_latest_genomic.fna
+# we choose bwtsw 	Algorithm for indexing as this method works with the whole human genome.
+# we choose mem as it works almostly in all length
 
+#sequence alignment
+cd ~/workdir/bwa_align
+R1="$HOME/workdir/fqData/SRR8241113_1.pe.trim.fastq"
+R2="$HOME/workdir/fqData/SRR8241113_2.pe.trim.fastq"
+/usr/bin/time -v bwa mem bwaIndex/GRCh38_latest_genomic.fna $R1 $R2 > SRR8241113.sam
 
 
 
