@@ -1,7 +1,7 @@
 conda activate ngs1
 
 #download data for the third sample 
-mkdir -p ~/ngs2project/sample_data && cd ~/ngs2project/sample_data
+mkdir -p ~/sample3_data && cd ~/sample3_data
 wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos1/sra-pub-run-1/SRR8241116/SRR8241116.1	
 
 # after dwanloaded the data, i couldn't open it so i used sra-toolkit to solve this problem
@@ -11,14 +11,14 @@ conda install -c bioconda sra-tools
 # Produces two fastq files (--split-files) containing ".1" and ".2" read suffices (-I) for paired-end data
 
 #check the quality of the data "fastaQC" using fastqc& multiqc tools 
- cd ~/ngs2project/sample_data
+  cd ~/sample3_data
 conda install -c bioconda fastqc 
-conda install -c bioconda multiqc 
-for f in ~/ngs2project/data_sample/*.fq.gz;do fastqc -t 1 -f fastq -noextract $f;done
+for f in ~/sample3_data/*.fastq.gz;do fastqc -t 1 -f fastq -noextract $f;done
 
 #multiqc report 
-mv ../fqData3/*html ./
-mv ../fqData3/*zip ./
+conda install -c bioconda multiqc 
+mv ../sample3_data/*html ./
+mv ../sample3_data/*zip ./
 multiqc -z -o . .
 
 #triming for increase the quality of the data using trimmomatic tool
