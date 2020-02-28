@@ -26,4 +26,38 @@ fastq-dump --split-files SRR8241115
 #download reference
 #wget https://www.ncbi.nlm.nih.gov/assembly/37871
 #downloade (whole  exome reference)  
- wget ftp://ftp.ensembl.org/pub/release-99/fasta/homo_sapiens/cds/Homo_sapiens.GRCh38.cds.all.fa.gz
+ wget ftp://ftp.ensembl.org/pub/release-99/fasta/homo_sapiens/cds/Homo_sapiens.GRCh38.cds.all.fa.gz 
+ gunzip Homo_sapiens.GRCh38.cds.all.fa.gz
+ 
+ ........................................................
+ mkdir -p ~/NGS2_Project/blast_align/blastIndex && cd ~/NGS2_Project/blast_align/blastIndex
+ ln -s ~/NGS2_Project/first_sample_data/Homo_sapiens.GRCh38.cds.all.fa .
+  ...............................................................................
+   explore sample 
+   head SRR8241115_1.fastq 
+@SRR8241115.1.1 B812MDABXX:8:1:3839:183285 length=90
+TTTTTTATGGAAGGGGTGCGGACACATCTCCAATATCCAATTTTATAATGTTTCATTAAGAAAATAGGATTTTCGTGACAGGGTTTAAAC
++SRR8241115.1.1 B812MDABXX:8:1:3839:183285 length=90
+FFFFFFFFFEFFFFFF*D:BACDDCFDFECFFE;BDFEAFBFFFEEBFFE?FF0:>A7A?AF;ED@*AA,>7<7;;;>B###########
+@SRR8241115.2.1 B812MDABXX:8:1:3921:183304 length=90
+
+   
+   
+   
+   .................................................................................
+  mkdir -p ~/NGS2_Project/GATK_tutorial && cd ~/NGS2_Project/GATK_tutorial
+for R1 in ~/NGS2_Project/first_sample_data/*_R1.fastq ;do
+    SM= Proband II-1                                                              ##sample ID
+    LB= HUMrmoXDTABAPEI-1                                                         ##library ID
+    PL="Illumina"                                                               ##platform (e.g. illumina, solid)
+    RGID=$(cat $R1 | head -n1 | sed 's/:/_/g' |cut -d "_" -f1,2,3,4)           ##read group identifier 
+    PU=$RGID.$LB                                                                ##Platform Unit
+    echo -e "@RG\tID:$RGID\tSM:$SM\tPL:$PL\tLB:$LB\tPU:$PU"
+
+    R2=$(echo $R1 | sed 's/_R1./_R2./')
+    echo $R1 $R2
+    index="$~/NGS2_Project/bwa_align/bwaIndex/Homo_sapiens.GRCh38.cds.all.fa"
+    bwa mem -t 4 -M -R "@RG\tID:$RGID\tSM:$SM\tPL:$PL\tLB:$LB\tPU:$PU" $index $R1 $R2 > $(basename $R1 _R1.fastq).sam
+  
+  
+ 
