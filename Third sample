@@ -20,13 +20,11 @@ conda install -c bioconda multiqc
 mv ../sample3_data/*html ./
 mv ../sample3_data/*zip ./
 multiqc -z -o . .
-
-#triming for increase the quality of the data using trimmomatic tool
-conda install -c bioconda trimmomatic 
-mkdir -p ~/ngs2project/trimmed3 && cd ~/ngs2project/trimmed3 
+file:///C:/Users/Lenovo/Downloads/multiqc_report.html 
+# from the fastQC report, sample3 has good quality 
 
 #Dwanload referance "chro17"
-mkdir -p ~/ngs2project/genomref && cd ~/ngs2project/genomref
+mkdir -p ~/genomref && cd ~/genomref
 wget ftp://ftp.ensembl.org/pub/release-99/fasta/homo_sapiens/cds/Homo_sapiens.GRCh38.cds.all.fa.gz
 
 #genome indexing to spead up the alinment process
