@@ -9,6 +9,7 @@ conda install -c bioconda sra-tools
 #convert data format from sra to fastq 
  fastq-dump -I --split-files --gzip SRR8241116.1
 # Produces two fastq files (--split-files) containing ".1" and ".2" read suffices (-I) for paired-end data
+gunzip 
 
 #check the quality of the data "fastaQC" using fastqc& multiqc tools 
   cd ~/sample3_data
@@ -36,9 +37,9 @@ bwa index -a bwtsw Homo_sapiens.GRCh38.cds.all.fa
  
 #sequance alignment using BWA
 cd ~/bwa_align
-R1="$HOME/sample3_data/SRR8241116.1_1.fastq.gz"
-R2="$HOME/sample3_data/SRR8241116.1_2.fastq.gz"
-/usr/bin/time -v bwa mem bwaIndex/Homo_sapiens.GRCh38.cds.all.fa $R1 $R2 > SRR8241116.1.sam
+R1="~/sample3_data/SRR8241116.1_1.fastq.gz"
+R2="~/sample3_data/SRR8241116.1_2.fastq.gz"
+ bwa mem bwaIndex/Homo_sapiens.GRCh38.cds.all.fa $R1 $R2 > SRR8241116.1.sam
 
 #convert SAM to BAM file using samtools
 conda install -y samtools
@@ -52,6 +53,7 @@ samtools index sorted_.bam
 
 #problem 
 fastq-dump  --origfmt -I  --split-files --gzip SRR8241116.1
+samtools flagstat SRR8241116.1.sam > SRR8241116.1.stat
 
 
 
