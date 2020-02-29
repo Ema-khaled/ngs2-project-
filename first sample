@@ -259,10 +259,111 @@ for sample in *.dedup.bam;do
   java -Xmx2g -jar $picard_path/picard.jar BuildBamIndex VALIDATION_STRINGENCY=LENIENT INPUT=$sample
 done 
 
+apt install samtools
+apt install default-jre            
+apt install openjdk-11-jre-headless
+apt install openjdk-8-jre-headless
 b -# Reference
+
 ln -s ~//home/ngs/NGS2_Project/bwa_align/bwaIndex/Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa .
-java -Xmx2g -jar $picard_path/picard.jar CreateSequenceDictionary R=Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa O=dog_chr5.dict
-samtools faidx Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa
+java -Xmx2g -jar $picard_path/picard.jar CreateSequenceDictionary R=Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa O=Homo_sapiens.GRCh38.dna_rm.chromosome.20
+samtools faidx Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa 
+
+
+......................
+##Download known polymorphic sites
+##dowenlod knowen varience on chr 20
+wget ftp://ftp.ensembl.org/pub/release-99/variation/vcf/homo_sapiens/homo_sapiens-chr20.vcf.gz
+gunzip homo_sapiens-chr20.vcf.gz 
+##expolore the chro,var
+          => ‘homo_sapiens-chr20.vcf.gz’
+Resolving ftp.ensembl.org (ftp.ensembl.org)... 193.62.193.8
+Connecting to ftp.ensembl.org (ftp.ensembl.org)|193.62.193.8|:21... connected.
+Logging in as anonymous ... Logged in!
+==> SYST ... done.    ==> PWD ... done.
+==> TYPE I ... done.  ==> CWD (1) /pub/release-99/variation/vcf/homo_sapiens ... done.
+==> SIZE homo_sapiens-chr20.vcf.gz ... 185905834
+==> PASV ... done.    ==> RETR homo_sapiens-chr20.vcf.gz ... done.
+Length: 185905834 (177M) (unauthoritative)
+
+homo_sapiens-chr20.vcf.gz   100%[===========================================>] 177.29M   776KB/s    in 3m 19s  
+
+2020-02-29 21:25:02 (910 KB/s) - ‘homo_sapiens-chr20.vcf.gz’ saved [185905834]
+............................................................................................................
+
+# Select variants on chr20 and correct chr name 
+grep "^#" homo_sapiens-chr20.vcf > eman_homo_sapiens-chr20.vcf
+grep "^5" homo_sapiens-chr20.vcf | sed 's/^5/chr5/' >> eman_homo_sapiens-chr20.vcf
+gatk IndexFeatureFile -I eman_homo_sapiens-chr20.vcf 
+
+........................................
+Recalibrate Bases BQSR
+
+for sample in *.dedup.bam;do
+  name=${sample%.dedup.bam}
+
+  gatk --java-options "-Xmx2G" BaseRecalibrator \
+-R Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa -I $sample --known-sites eman_homo_sapiens-chr20.vcf \
+-O $name.report
+
+  gatk --java-options "-Xmx2G" ApplyBQSR \
+-R Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa -I $sample -bqsr $name.report \
+-O $name.bqsr.bam --add-output-sam-program-record --emit-original-quals
+done
+
+............................................
+##Joint variant calling using HaplotypeCaller
+Call germline SNPs and indels via local re-assembly of haplotypes
+
+
+## assess genotype likelihood per-sample
+for sample in *.bqsr.bam;do
+  name=${sample%.bqsr.bam}
+
+  gatk --java-options "-Xmx2G" HaplotypeCaller \
+  -R dog_chr5.fa -I $sample \
+  --emit-ref-confidence GVCF \
+  --pcr-indel-model NONE \
+  -O $name.gvcf
+done
+............................................................................
+
+ unfortionately we coudnt met to combine oure samples together to support the varient 
+## combine samples
+
+## Joint Genotyping
+gatk --java-options "-Xmx60G" GenotypeGVCFs \
+-R Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa \
+-V raw_variants.gvcf \
+--max-alternate-alleles 6 \
+-O raw_variants.vcf
+
+## annotated output
+gatk --java-options "-Xmx60G" GenotypeGVCFs \
+-R Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa \
+-V raw_variants.gvcf \
+--max-alternate-alleles 6 \
+--dbsnp eman_homo_sapiens-chr20.vcf \
+-O raw_variants_ann.vcf
+
+## check how many variant got annotated
+grep -v "^#" raw_variants_ann.vcf | awk '{print $3}' | grep "^rs" | wc -l
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
