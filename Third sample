@@ -11,6 +11,8 @@ conda install -c bioconda sra-tools
 # Produces two fastq files (--split-files) containing ".1" and ".2" read suffices (-I) for paired-end data
 #another way for spliting 
 fastq-dump -I --split-3 --gzip ~/ngs/sample3_data/SRR8241116.1
+#the output still hasn't the same pattern so i used this code << biostars recomendation>>
+sed -E "s/^((@|+)SRR[^.]+.[^.]+.[^.]+).(1|2)/\1/" ~/sample3_data/SRR8241116.1_1.fastq > ~/SRR8241116.1_1.fixed.fastq 
 
 #check the quality of the data "fastaQC" using fastqc& multiqc tools 
   cd ~/sample3_data
@@ -29,37 +31,13 @@ file:///C:/Users/Lenovo/Downloads/multiqc_report.html
 mkdir -p ~/genomref && cd ~/genomref
 wget ftp://ftp.ensembl.org/pub/release-99/fasta/homo_sapiens/cds/Homo_sapiens.GRCh38.cds.all.fa.gz
 gunzip Homo_sapiens.GRCh38.cds.all.fa.gz
-cd ~/bwa_align/bwaIndex
- ln -s /home/ngs/genomref/Homo_sapiens.GRCh38.cds.all.fa .
-  bwa index -a bwtsw Homo_sapiens.GRCh38.cds.all.fa
  
-#download referance "chro20"
-mkdir -p ~/genomref1 && cd ~/genomref1
-wget ftp://ftp.ensembl.org/pub/release-99/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa.gz 
-gunzip Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa.gz
-
 #genome indexing to spead up the alinment process
  mkdir -p ~/bwa_align/bwaIndex && cd ~/bwa_align/bwaIndex
- ln -s /home/ngs/genomref1/Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa .
+ ln -s /home/ngs/genomref/Homo_sapiens.GRCh38.cds.all.fa .
 conda install -c bioconda bwa
-bwa index -a bwtsw Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa.gz
-
-#add read group information 
-mkdir -p ~/GATK && cd ~/GATK
-for R1 in ~/NGS2_Project/first_sample_data/*_R1.fastq ;do
-    SM= Proband II-1                                                              ##sample ID
-    LB= HUMrmoXDTABAPEI-1                                                         ##library ID
-    PL="Illumina"                                                               ##platform (e.g. illumina, solid)
-    RGID=$(cat $R1 | head -n1 | sed 's/:/_/g' |cut -d "_" -f1,2,3,4)           ##read group identifier 
-    PU=$RGID.$LB                                                                ##Platform Unit
-    echo -e "@RG\tID:$RGID\tSM:$SM\tPL:$PL\tLB:$LB\tPU:$PU"
-
-    R2=$(echo $R1 | sed 's/_R1./_R2./')
-    echo $R1 $R2
-    index="$~/NGS2_Project/bwa_align/bwaIndex/Homo_sapiens.GRCh38.cds.all.fa"
-    bwa mem -t 4 -M -R "@RG\tID:$RGID\tSM:$SM\tPL:$PL\tLB:$LB\tPU:$PU" $index $R1 $R2 > 101228_I433_FC812MDABXX_HUMrmoXDTABAPEI.sam
-    not working 
- 
+bwa index -a bwtsw Homo_sapiens.GRCh38.cds.all.fa
+  
 #sequance alignment using BWA
 cd ~/bwa_align
 R1="~/sample3_data/SRR8241116.1_1.fastq.gz"
