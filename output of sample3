@@ -15,6 +15,23 @@ AATAGGCAGGAGATGGGGGACAGCCGGGTACAGGGGACATCATGGAGACGCCGGGGGACTGGCCAAGTGCCCGGGACCCC
 FGGGFBGHFGGFGGG@EEB/==-A>>5>*9C6=??GCFEBEED5E.=9=>>ED=;5C?BBCEDF##########################
 @SRR8241116.1.2.2 B812MDABXX:7:1:1490:2063 length=90
 TTTATTGTGGAATTAATTACTTACAGACACTGTTAGGGAATCTTGTATATCTTTATGACTCACTAGCTGAACATTACCATCTTCATAATA
-
+--------------------------------------------------------------------------------------------------------------
 #fastQC multireport >>>> the sample quality is good 
 file:///C:/Users/Lenovo/Downloads/multiqc_report.html 
+--------------------------------------------------------------------------------------------------------------
+#SRR8241116.1.stat
+54651030 + 0 in total (QC-passed reads + QC-failed reads)
+0 + 0 secondary
+56404 + 0 supplementary
+0 + 0 duplicates
+34318975 + 0 mapped (62.80% : N/A)
+54594626 + 0 paired in sequencing
+27297313 + 0 read1
+27297313 + 0 read2
+21916732 + 0 properly paired (40.14% : N/A)
+23062448 + 0 with itself and mate mapped
+11200123 + 0 singletons (20.52% : N/A)
+1110062 + 0 with mate mapped to a different chr
+330915 + 0 with mate mapped to a different chr (mapQ>=5)
+----------------------------------------------------------------------------------------------------
+
