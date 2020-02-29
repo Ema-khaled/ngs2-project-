@@ -9,7 +9,8 @@ conda install -c bioconda sra-tools
 #convert data format from sra to fastq 
  fastq-dump -I --split-files --gzip SRR8241116.1
 # Produces two fastq files (--split-files) containing ".1" and ".2" read suffices (-I) for paired-end data
-gunzip 
+#another way for spliting 
+fastq-dump -I --split-3 --gzip ~/ngs/sample3_data/SRR8241116.1
 
 #check the quality of the data "fastaQC" using fastqc& multiqc tools 
   cd ~/sample3_data
