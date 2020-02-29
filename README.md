@@ -22,12 +22,17 @@ Study Design:
 
 First sample done by Eman khaled ahmed ....(ID=191092)
 2nd sample done by Shimaa Tawfeeq Abdallah Omara (ID=192060)
-Third sample done by Yomna....(ID=...)
+Third sample done by Yomna youssef(ID=191090)
 
 
 ##for First sample  (EMAN )  
 The first 158 line is the sequnece of my totorial with issues that i faced step by steb mainly untill the alignment step  
 then the totorial witout any error to be radable .. 
+
+#The third sample (yomna)
+there is  two files, the first one is for the script that i used (third sample) and the second one for the output of the main files 
+
+#The design for sample1 and 3 is made by Eman and Yomna,we made call variants through two differant tools and referances to know the differance btween them and make sure from the results. 
 
 ## For Shimaa files, please reads the files in the following sequences:
 1-Shimaa_2nd sample
