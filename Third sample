@@ -9,11 +9,12 @@ conda install -c bioconda sra-tools
 #convert data format from sra to fastq 
  fastq-dump -I --split-files --gzip SRR8241116.1
 # Produces two fastq files (--split-files) containing ".1" and ".2" read suffices (-I) for paired-end data
+# the paied files still don't has the same name pattern 
 #another way for spliting 
 fastq-dump -I --split-3 --gzip ~/ngs/sample3_data/SRR8241116.1
 #the output still hasn't the same pattern so i used this code << biostars recomendation>>
 sed -E "s/^((@|+)SRR[^.]+.[^.]+.[^.]+).(1|2)/\1/" ~/sample3_data/SRR8241116.1_1.fastq > ~/SRR8241116.1_1.fixed.fastq 
-
+#it worked 
 #check the quality of the data "fastaQC" using fastqc& multiqc tools 
   cd ~/sample3_data
 conda install -c bioconda fastqc 
