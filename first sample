@@ -156,12 +156,27 @@ R1="$HOME/NGS2_Project/first_sample_data/SRR8241116.1_1.fixed.fastq"
      conda install -c bioconda fastq-pair
      fastq_pair SRR8241115_1.fastq SRR8241115_2.fastq
 
-
-
-ibdexing 
-
-
-NGS2_Project/first_sample_data/SRR8241115_2.fastq
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+1-Create the conda env if you have not already did
+conda create -y --name project python=3.6
+conda activate ngs1 
+mkdir -p ~/NGS2_Project/first_sample_data && cd ~/NGS2_Project/first_sample_data
+without trubleshooting  
+ ......................
+2- #to  dowenlode sra samples  then convert it to fastaq (paired) 
+ conda install -c bioconda sra-tools 
+ prefetch SRR8241115 
+ fastq-dump --split-3 SRR8241115 
+ .................................................
+3- dowenload the refrence genom (selecting chromosome 20) 
+wget ftp://ftp.ensembl.org/pub/release-99/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa.gz  
+gun zip ftp://ftp.ensembl.org/pub/release-99/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa.gz
+......................................
+4-indexing the refrence 
+ln -s ~/NGS2_Project/first_sample_data/Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa
+bwaIndex$ bwa index -a bwtsw Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa 
+..........................................
+5- Add Read group information and align all reads and aligne the sample using bwa
 
     R1="$HOME/NGS2_Project/first_sample_data/SRR8241115_1.fastq"
     R2="$HOME/NGS2_Project/first_sample_data/SRR8241115_2.fastq"
@@ -171,7 +186,18 @@ NGS2_Project/first_sample_data/SRR8241115_2.fastq
     PL="Illumina"
     RGID="FC812MDABXX"
     PU=$RGID.$LB
-     bwa mem -t 4 -M -R "@RG\tID:$RGID\tSM:$SM\tPL:$PL\tLB:$LB\tPU:$PU" $index $R1 $R2 > 1FC812MDABXX_HUMrmoXDTABAPEI.sam 
+     bwa mem -t 4 -M -R "@RG\tID:$RGID\tSM:$SM\tPL:$PL\tLB:$LB\tPU:$PU" $index $R1 $R2 > 1FC812MDABXX_HUMrmoXDTABAPE
+................................................................
+6 -#generate & sort BAM file 
+
+ for samfile in *.sam;do
+  sample=${samfile%.sam}
+  samtools view -hbo $sample.bam $samfile
+  samtools sort $sample.bam -o $sample.sorted.bam
+done
+
+...............................................
+
 
 
 
