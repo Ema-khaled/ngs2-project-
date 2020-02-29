@@ -34,4 +34,13 @@ file:///C:/Users/Lenovo/Downloads/multiqc_report.html
 1110062 + 0 with mate mapped to a different chr
 330915 + 0 with mate mapped to a different chr (mapQ>=5)
 ----------------------------------------------------------------------------------------------------
+ #explore SRR8241116.1.vcf
+ wc SRR8241116.1.vcf 
+ 186696   867438 18244251
+ #first filter <<<< remove indels>> 
+ wc SNPs_only.recode.vcf 
+ 185547   855948 18040272
+ #filtering through chromosome number 
+ wc chr17 
+ 111075  111228 4821603
 
