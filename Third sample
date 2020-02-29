@@ -68,6 +68,12 @@ bash $IGV -g bwaIndex/Homo_sapiens.GRCh38.cds.all.fa  sorted_SRR8241116.1.bam
 conda install bcftools
 bcftools mpileup -Ou -f bwaIndex/Homo_sapiens.GRCh38.cds.all.fa  sorted_SRR8241116.1.bam |\bcftools call -Ov -mv > SRR8241116.1.vcf
 
+#filtering 
+conda install -y vcftools
+# removes any indel sites "our study about the SNPs" 
+cftools --vcf SRR8241116.1.vcf --remove-indels --recode --recode-INFO-all --out SNPs_only
+wc SNPs_only 
+vcftools --vcf SRR8241116.1.vcf  --freq --out srafreq
 
 
 
