@@ -75,6 +75,11 @@ cftools --vcf SRR8241116.1.vcf --remove-indels --recode --recode-INFO-all --out 
 wc SNPs_only 
 vcftools --vcf SRR8241116.1.vcf  --freq --out srafreq
 
+#extract the SNPs that is related to gene KCNH6     
+vcftools --vcf SRR8241116.1.vcf --snp rs35399062 --recode --recode-INFO-all --stdout > rs35399062.vcf
+#no results 
+#i tried several SNPs >> but there is no results 
+
 
 
 
