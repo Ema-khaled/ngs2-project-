@@ -29,12 +29,36 @@ file:///C:/Users/Lenovo/Downloads/multiqc_report.html
 mkdir -p ~/genomref && cd ~/genomref
 wget ftp://ftp.ensembl.org/pub/release-99/fasta/homo_sapiens/cds/Homo_sapiens.GRCh38.cds.all.fa.gz
 gunzip Homo_sapiens.GRCh38.cds.all.fa.gz
+cd ~/bwa_align/bwaIndex
+ ln -s /home/ngs/genomref/Homo_sapiens.GRCh38.cds.all.fa .
+  bwa index -a bwtsw Homo_sapiens.GRCh38.cds.all.fa
+ 
+#download referance "chro20"
+mkdir -p ~/genomref1 && cd ~/genomref1
+wget ftp://ftp.ensembl.org/pub/release-99/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa.gz 
+gunzip Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa.gz
 
 #genome indexing to spead up the alinment process
  mkdir -p ~/bwa_align/bwaIndex && cd ~/bwa_align/bwaIndex
-ln -s ~/genomref/Homo_sapiens.GRCh38.cds.all.fa .
+ ln -s /home/ngs/genomref1/Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa .
 conda install -c bioconda bwa
-bwa index -a bwtsw Homo_sapiens.GRCh38.cds.all.fa
+bwa index -a bwtsw Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa.gz
+
+#add read group information 
+mkdir -p ~/GATK && cd ~/GATK
+for R1 in ~/NGS2_Project/first_sample_data/*_R1.fastq ;do
+    SM= Proband II-1                                                              ##sample ID
+    LB= HUMrmoXDTABAPEI-1                                                         ##library ID
+    PL="Illumina"                                                               ##platform (e.g. illumina, solid)
+    RGID=$(cat $R1 | head -n1 | sed 's/:/_/g' |cut -d "_" -f1,2,3,4)           ##read group identifier 
+    PU=$RGID.$LB                                                                ##Platform Unit
+    echo -e "@RG\tID:$RGID\tSM:$SM\tPL:$PL\tLB:$LB\tPU:$PU"
+
+    R2=$(echo $R1 | sed 's/_R1./_R2./')
+    echo $R1 $R2
+    index="$~/NGS2_Project/bwa_align/bwaIndex/Homo_sapiens.GRCh38.cds.all.fa"
+    bwa mem -t 4 -M -R "@RG\tID:$RGID\tSM:$SM\tPL:$PL\tLB:$LB\tPU:$PU" $index $R1 $R2 > 101228_I433_FC812MDABXX_HUMrmoXDTABAPEI.sam
+    not working 
  
 #sequance alignment using BWA
 cd ~/bwa_align
@@ -45,16 +69,23 @@ R2="~/sample3_data/SRR8241116.1_2.fastq.gz"
 #convert SAM to BAM file using samtools
 conda install -y samtools
 samtools view -hbo SRR8241116.1.bam SRR8241116.1.sam
+samtools flagstat SRR8241116.1.sam > SRR8241116.1.stat
 
 # Sorting the BAM file
 samtools sort SRR8241116.1.bam -o sorted_SRR8241116.1.bam
 
 # Indexing the BAM file
-samtools index sorted_.bam
+samtools index sorted_SRR8241116.1.bam
 
-#problem 
-fastq-dump  --origfmt -I  --split-files --gzip SRR8241116.1
-samtools flagstat SRR8241116.1.sam > SRR8241116.1.stat
+#vizualization 
+cd ~
+wget http://data.broadinstitute.org/igv/projects/downloads/2.5/IGV_Linux_2.5.0.zip
+unzip IGV_Linux_2.5.0.zip
+sudo echo 'export IGV=$HOME/IGV_Linux_2.5.0/igv.sh' >> ~/.bashrc
+source ~/.bashrc
+conda activate ngs1
+bash $IGV -g bwaIndex/Homo_sapiens.GRCh38.cds.all.fa  sorted_SRR8241116.1.bam
+
 
 
 
