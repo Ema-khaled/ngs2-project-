@@ -86,6 +86,10 @@ source ~/.bashrc
 conda activate ngs1
 bash $IGV -g bwaIndex/Homo_sapiens.GRCh38.cds.all.fa  sorted_SRR8241116.1.bam
 
+#call variants 
+conda install bcftools
+bcftools mpileup -Ou -f bwaIndex/Homo_sapiens.GRCh38.cds.all.fa  sorted_SRR8241116.1.bam |\bcftools call -Ov -mv > SRR8241116.1.vcf
+
 
 
 
