@@ -40,8 +40,8 @@ there is  two files, the first one is for the script that i used (third sample) 
 3-Shimaa_statsSummaryFile
 4-Shimaa_SRR8241113_1.pe.trim.fastq
 4-Shimaa_SRR8241113_2.pe.trim.fastq
-5-Some files like Shimaa_SRR8241113.sam, Shimaa_SRR8241113.bam, Shimaa_SRR8241113.sorted.bam, and sam are sent via mail as most of the files are larger than 25MB (the default upload value of github)
-https://drive.google.com/drive/folders/1xoKcDShpaEh6Gi0wmfZN7DSVey351aQ-?usp=sharing
+5-Some files like Shimaa_SRR8241113.sam, Shimaa_SRR8241113.bam, Shimaa_SRR8241113.sorted.bam, and sam are sent via Google Drive to (drtamermansour@gmail.com) as most of the files are larger than 25MB (the default upload value of github).
+Google Drive is https://drive.google.com/drive/folders/1xoKcDShpaEh6Gi0wmfZN7DSVey351aQ-?usp=sharing
 5-Shimaa_Visualize mapping using tview in samtools
 6-Shimaa_SRR8241113.vcf
 10-Issues met Shimaa 
