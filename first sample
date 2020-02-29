@@ -227,6 +227,13 @@ result of stat file
 218844 + 0 singletons (0.41% : N/A)
 
 .........................................................
+8-#Mark duplicate
+for sample in *.sorted.bam;do
+  name=${sample%.sorted.bam}
+  java  -Xmx2g -jar $picard_path/picard.jar MarkDuplicates INPUT=$sample OUTPUT=$name.dedup.bam METRICS_FILE=$name.metrics.txt;
+done
+.......................................................
+
 
 
 
