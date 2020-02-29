@@ -212,8 +212,24 @@ for bamFile in *.sorted.bam;do
   output=${bamFile%.sorted.bam}
   samtools depth $bamFile | awk '{{sum+=$3}} END {{print "Average = ",sum/NR, "No of covered Nuc = ", NR}}' > $output.cov
   samtools flagstat $bamFile > $output.stat
-done
-result of stat file 
+done 
+#depth of not sorted bam
+samtools depth 1FC812MDABXX_HUMrmoXDTABAPEI.bam | head[E::bam_plp_push] The input is not sorted (reads out of order)
+20      30494937        1
+20      30494938        1
+20      30494939        1
+20      30494940        1
+20      30494941        1
+
+#depth of sorted bam file 
+ samtools depth 1FC812MDABXX_HUMrmoXDTABAPEI.sorted.bam | head
+20      60000   1
+20      60001   21
+20      60002   21
+20      60003   21
+20      60004   21
+
+#result of stat file 
 52764413 + 0 in total (QC-passed reads + QC-failed reads)
 4201 + 0 secondary
 0 + 0 supplementary
