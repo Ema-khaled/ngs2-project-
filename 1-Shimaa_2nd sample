@@ -49,7 +49,7 @@ $ ls -tral /home/ngs/workdir/fqData/SRR8241113/SRR8241113.sra
 -rw-rw-r-- 1 ngs ngs 2911751441 Feb 25 23:20 /home/ngs/workdir/fqData/SRR8241113/SRR8241113.sra
 
 ##Produces two fastq files (--split-files) containing ".1" and ".2" read suffices (-I) for paired-end data: 
-$ fastq-dump --split-files SRR8241113
+$ fastq-dump -I --split-files SRR8241113
 $ ls -tral (The two reads files occupying on disk about 8807663814 for each read (about 9 GB each):
 -rw-rw-r-- 1 ngs ngs 8807663814 Feb 26 10:01  SRR8241113_2.fastq
 -rw-rw-r-- 1 ngs ngs 8807663814 Feb 26 10:01  SRR8241113_1.fastq
@@ -80,4 +80,225 @@ $ ls -tral
 -rw-rw-r-- 1 ngs ngs 261625 Feb 26 12:38 SRR8241113_2_fastqc.zip
 -rw-rw-r-- 1 ngs ngs 235198 Feb 26 12:38 SRR8241113_2_fastqc.html
 
+So I found that the storage spaces are : 260091 and 261625 for SRR8241113_1_fastqc.zip and SRR8241113_2_fastqc.zip respectively.
+##Trust HTML to load and explore them: all data were of high quality.
 
+## Now I will Merge the output reports into one super report
+$ cd ..
+$ cd FASTQC_tut/
+$ mv ../fqData/*html ./
+$ mv ../fqData/*zip ./
+## Using multiqc for merging the two html files 
+$ multiqc -h > multiqc_help
+(Note from multiqc_help page: -z compress and it will be here in the current directory, -o the output will be here in the current directory, the last . is the working directory)
+-z, --zip-data-dir              Compress the data directory.
+-o, --outdir TEXT               Create report in the specified output
+                                  directory.
+
+$ multiqc -z -o . .
+$ ls -tral
+-rw-rw-r-- 1 ngs ngs 1151987 Feb 26 14:12  multiqc_report.html
+-rw-rw-r-- 1 ngs ngs   13073 Feb 26 14:12  multiqc_data.zip
+
+## View the results
+
+   # Open jupyter
+   # Browse to ~/workdir/FASTQC_tut
+   # Double click on the file multiqc_report.html:
+   file:///home/shimaa/Downloads/multiqc_report.html
+      # On the top left of the multiqc_report.html tab header, click on Trust HTML
+   # Trust HTML to load and explore them
+   ##all data were of high quality.
+#Kindly check the files named:
+2-Shimaa_fastqc_multiqc_report
+3-Shimaa_statsSummaryFile
+3-a-Shimaa_Visualize mapping using tview in samtools
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#4-Trimmomatric application to Cut the adapter and other illumina-specific sequences from the data reads according to their quality scores
+##Trimmomatric is an easy application and have an access to the illumina reads. Trimmomatric will align the technical sequences (all artificial sequences used by ilumina during library preparation) on my reads sequence; if they aligned (means chimeric reaction), Trimmomatric will remove these reads
+##Install the software
+$ conda activate ngs1
+$ conda install -c bioconda trimmomatric 
+##Run Trimmomatric
+## 1. Create practicing directory
+mkdir -p ~/workdir/trimmed && cd ~/workdir/trimmed 
+## 2. Set environmental variables
+$
+f1="$HOME/workdir/fqData/SRR8241113_1.fastq"
+f2="$HOME/workdir/fqData/SRR8241113_2.fastq"
+newf1="$HOME/workdir/fqData/SRR8241113_1.pe.trim.fastq"
+newf2="$HOME/workdir/fqData/SRR8241113_2.pe.trim.fastq"
+newf1U="$HOME/workdir/fqData/SRR8241113_1.se.trim.fastq"
+newf2U="$HOME/workdir/fqData/SRR8241113_1.se.trim.fastq"
+adap="$CONDA_PREFIX/share/trimmomatic-0.39-1/adapters"
+
+## To Run trimmomatric:
+# First let us go to understand its option:
+$ trimmomatic -h
+Usage: 
+PE [-version] [-threads <threads>] [-phred33|-phred64] [-trimlog <trimLogFile>] [-summary <statsSummaryFile>] [-quiet] [-validatePairs] [-basein <inputBase> | <inputFile1> <inputFile2>] [-baseout <outputBase> | <outputFile1P> <outputFile1U> <outputFile2P> <outputFile2U>] <trimmer1>...
+#Note that: in SLIDINGWINDOW, when you found 4 nucleotide it is average error 15 cut it
+            MINLEN: it is the minimum length
+# Now let us go to run trimmomatric:
+$ trimmomatic PE -threads 1 -phred33 -trimlog trimLogFile -summary statsSummaryFile  $f1 $f2 $newf1 $newf1U $newf2 $newf2U \
+ILLUMINACLIP:$adap/TruSeq3-PE.fa:2:30:10:1 SLIDINGWINDOW:4:15 MINLEN:36
+
+
+TrimmomatricPE: Started with arguments:
+ -threads 1 -phred33 -trimlog trimLogFile -summary statsSummaryFile /home/ngs/workdir/fqData/SRR8241113_1.fastq /home/ngs/workdir/fqData/SRR8241113_2.fastq /home/ngs/workdir/fqData/SRR8241113_1.pe.trim.fastq /home/ngs/workdir/fqData/SRR8241113_1.se.trim.fastq /home/ngs/workdir/fqData/SRR8241113_2.pe.trim.fastq /home/ngs/workdir/fqData/SRR8241113_1.se.trim.fastq ILLUMINACLIP:/home/ngs/miniconda3/envs/ngs1/share/trimmomatic-0.39-1/adapters/TruSeq3-PE.fa:2:30:10:1 SLIDINGWINDOW:4:15 MINLEN:36
+Using PrefixPair: 'TACACTCTTTCCCTACACGACGCTCTTCCGATCT' and 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'
+ILLUMINACLIP: Using 1 prefix pairs, 0 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Input Read Pairs: 29475143 Both Surviving: 29184703 (99.01%) Forward Only Surviving: 182819 (0.62%) Reverse Only Surviving: 92586 (0.31%) Dropped: 15035 (0.05%)
+TrimmomatricPE: Completed successfully
+
+#Kindly check the files named:
+4-Shimaa_SRR8241113_1.pe.trim.fastq
+4-Shimaa_SRR8241113_2.pe.trim.fastq
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+##5-Sequence BWA Alignment
+#Manual Reference Pages  of bwa:
+http://bio-bwa.sourceforge.net/bwa.shtml
+
+#install bwa
+$ conda activate ngs1
+$ conda install -c bioconda -y bwa
+
+#Index my genome
+$ mkdir -p ~/workdir/bwa_align/bwaIndex && cd ~/workdir/bwa_align/bwaIndex
+$ ln -s ~/workdir/sample_data/GRCh38_latest_genomic.fna .
+$ bwa index -a bwtsw GRCh38_latest_genomic.fna
+# I choose bwtsw 	Algorithm for indexing as this method works with the whole human genome.
+# I choose mem as it works almostly in all length
+
+#sequence alignment
+$ cd ~/workdir/bwa_align
+R1="$HOME/workdir/fqData/SRR8241113_1.pe.trim.fastq"
+R2="$HOME/workdir/fqData/SRR8241113_2.pe.trim.fastq"
+/usr/bin/time -v bwa mem bwaIndex/GRCh38_latest_genomic.fna $R1 $R2 > SRR8241113.sam
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+##6-Visualize mapping
+
+#install samtools
+#manual webpage: http://www.htslib.org/doc/samtools.html
+$ conda activate ngs1
+$ conda install samtools
+
+# Convert the SAM file into a BAM file that can be sorted and indexed:
+$ samtools view -hbo SRR8241113.bam SRR8241113.sam
+#The -b and -h options change the output format from the default of headerless SAM, and the -o option set the output file name. 
+
+# Sort the BAM file by position in genome:
+#-o FILE: Write the final sorted output to FILE, rather than to standard output.
+$ samtools sort SRR8241113.bam -o SRR8241113.sorted.bam
+[bam_sort_core] merging from 18 files and 1 in-memory blocks...
+
+# Index the BAM file so that we can randomly access it quickly:
+$ samtools index SRR8241113.sorted.bam
+the output named SRR8241113.sorted.bam.bai
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+##7-Visualize mapping using tview in samtools
+$ samtools tview -p chr17:62155107 SRR8241113.sorted.bam bwaIndex/GRCh38_latest_genomic.fna
+#Understanding Pileup format should help explaining the symbols in tview
+. (dot) means a base that matched the reference on the forward strand
+R1="$HOME/workdir/fqData/SRR8241113_1.pe.trim.fastq"
+(ngs1) ngs@bioinfo_nu:~/workdir/GATK_tutorial$     SM="SRR8241113"                                                                 ##sample ID
+(ngs1) ngs@bioinfo_nu:~/workdir/GATK_tutorial$     LB="HUMrmoXDTABAPEI-10"                                                     ##library ID
+(ngs1) ngs@bioinfo_nu:~/workdir/GATK_tutorial$     PL="Illumina"                                                               ##platform (e.g. illumina, solid)
+(ngs1) ngs@bioinfo_nu:~/workdir/GATK_tutorial$     RGID="$SM"                                                                  ##read group identifier 
+(ngs1) ngs@bioinfo_nu:~/workdir/GATK_tutorial$     PU="$SM"                                                                ##Platform Unit
+(ngs1) ngs@bioinfo_nu:~/workdir/GATK_tutorial$     echo -e "@RG\tID:$RGID\tSM:$SM\tPL:$PL\tLB:$LB\tPU:$PU"
+@RG     ID:SRR8241113   SM:SRR8241113   PL:Illumina     LB:HUMrmoXDTABAPEI-10   PU:SRR8241113
+(ngs1) ngs@bioinfo_nu:~/workdir/GATK_tutorial$     R2="$HOME/workdir/fqData/SRR8241113_2.pe.trim.fastq"
+(ngs1) ngs@bioinfo_nu:~/workdir/GATK_tutorial$     index="$HOME/workdir/bwa_align/bwaIndex/GRCh38_latest_genomic.fna"
+(ngs1) ngs@bioinfo_nu:~/workdir/GATK_tutorial$     bwa mem -t 4 -M -R "@RG\tID:$RGID\tSM:$SM\tPL:$PL\tLB:$LB\tPU:$PU" $index $R1 $R2 > SRR8241113.RGI.sam, (comma) means a base that matched the reference on the reverse strand
+AGTCN (upper case) denotes a base that did not match the reference on the forward strand
+agtcn (lower case) denotes a base that did not match the reference on the reverse strand
+press ? for help
+q to quit
+CTRL-h and CTRL-l do “big” scrolls
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+##8-Call variants
+#Install BCFTools
+$ conda install bcftools
+
+mpileup:
+    Generate genotype likelihoods for one or multiple alignment files.
+Call:
+    SNP/indel calling
+    -m multiallelic-caller
+    -v output variant sites only
+
+$ bcftools mpileup -Ou -f bwaIndex/GRCh38_latest_genomic.fna SRR8241113.sorted.bam |\
+bcftools call -Ov -mv > SRR8241113.vcf
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#9-GATK Variant calling
+#Explore the sample names
+$ ls -tral ~/workdir/fqData/*1.fastq
+-rw-rw-r-- 1 ngs ngs 8807663814 Feb 26 10:01 /home/ngs/workdir/fqData/SRR8241113_1.fastq
+$ ls -tral ~/workdir/fqData/*2.fastq
+-rw-rw-r-- 1 ngs ngs 8807663814 Feb 26 10:01 /home/ngs/workdir/fqData/SRR8241113_2.fastq
+------------------------------------------------------------
+Add Read group information and align all reads
+#1-Download the another sample_data Fastq files (the secound data in our bioproject) (the accession:SRX5059368,the run: SRR8241113, ILLUMINA (Illumina HiSeq 2000) run: 29.5M spots, 5.3G bases, 2.7Gb downloads):
+$ cd .. && cd ~/workdir/fqData
+
+##To download the run by accession using prefetch (The actual file will be downloaded to the cache area in my filesystem):
+$ conda install -c bioconda sra-tools
+$ prefetch SRR8241115
+
+## To Know the path of the downloaded runs:
+$ srapath SRR8241113
+/home/ngs/workdir/fqData/SRR8241113/SRR8241113.sra
+
+##The run file is compressed, occupying on disk about 2911751441 (about 3 GB):
+$ ls -tral /home/ngs/workdir/fqData/SRR8241113/SRR8241113.sra
+-rw-rw-r-- 1 ngs ngs 2911751441 Feb 25 23:20 /home/ngs/workdir/fqData/SRR8241113/SRR8241113.sra
+
+##Produces two fastq files (--split-files) containing ".1" and ".2" read suffices (-I) for paired-end data: 
+$ fastq-dump -I --split-files SRR8241113
+$ ls -tral (The two reads files occupying on disk about 8807663814 for each read (about 9 GB each):
+-rw-rw-r-- 1 ngs ngs 8807663814 Feb 26 10:01  SRR8241113_2.fastq
+-rw-rw-r-- 1 ngs ngs 8807663814 Feb 26 10:01  SRR8241113_1.fastq
+## then doing trimming as previously described
+--------------------------------------------------------------------------------------------
+##Add Read group information and align all reads
+conda activate ngs1
+$ cd ~/workdir/fqData
+I changed the file name of SRR8241113 and SRR8241115 according to their related SRA study:
+##SRR8241113 R1 and R2 become:
+##101228_I433_FC812MDABXX_L7_HUMrmoXDQABAPEI-10_R1.pe.trim.fq
+##101228_I433_FC812MDABXX_L7_HUMrmoXDQABAPEI-10_R2.pe.trim.fq
+##SRR8241115 R1 and R2 become:
+##101228_I433_FC812MDABXX_L8_HUMrmoXDTABAPEI-1_R1.pe.trim.fq
+##101228_I433_FC812MDABXX_L8_HUMrmoXDTABAPEI-1_R2.pe.trim.fq
+
+## Note that in each fastq file the header was written in the following formate:
+##@SRR8241113.1 B812MDABXX:7:1:1323:2022 length=90
+##@SRR8241115.1 B812MDABXX:8:1:3839:183285 length=90
+which represents @(run number):? :(lane):
+so I used this command to see what will happen:
+$ cat SRR8241113_1.fastq | head -n1 | sed -e 's/:/_/g;s/ /_/g;s/\./_/g' |cut -d "_" -f1,2,3,4 > test
+ @SRR8241113_1_B812MDABXX_7
+so I will cut only f1,4 in formation of RGID
+so the command line will be as follows:
+mkdir -p ~/workdir/GATK_tutorial && cd ~/workdir/GATK_tutorial
+for R1 in ~/workdir/fqData/*_R1.pe.trim.fq;do
+    SM=$(basename $R1 | cut -d"_" -f1)                                                      ##sample ID
+    LB=$(basename $R1 | cut -d"_" -f1,2)                                                    ##library ID
+    PL="Illumina"                                                                            ##platform (e.g. illumina, solid)
+    RGID=$(cat $R1 | head -n1 | sed -e 's/:/_/g;s/ /_/g;s/\./_/g' | cut -d "_" -f1,4)           ##read group identifier 
+    PU=$RGID.$LB                                                                              ##Platform Unit
+    echo -e "@RG\tID:$RGID\tSM:$SM\tPL:$PL\tLB:$LB\tPU:$PU"
+    R2=$(echo $R1 | sed 's/_R1./_R2./')
+    echo $R1 $R2
+    index="$HOME/workdir/bwa_align/bwaIndex/GRCh38_latest_genomic.fna"
+    bwa mem -t 4 -M -R "@RG\tID:$RGID\tSM:$SM\tPL:$PL\tLB:$LB\tPU:$PU" $index $R1 $R2 > $(basename $R1 _R1.pe.trim.fq).sam
+done
+
+----------------------------------------------------------------
