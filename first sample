@@ -57,7 +57,84 @@ for R1 in ~/NGS2_Project/first_sample_data/*_R1.fastq ;do
     R2=$(echo $R1 | sed 's/_R1./_R2./')
     echo $R1 $R2
     index="$~/NGS2_Project/bwa_align/bwaIndex/Homo_sapiens.GRCh38.cds.all.fa"
-    bwa mem -t 4 -M -R "@RG\tID:$RGID\tSM:$SM\tPL:$PL\tLB:$LB\tPU:$PU" $index $R1 $R2 > $(basename $R1 _R1.fastq).sam
+    bwa mem -t 4 -M -R "@RG\tID:$RGID\tSM:$SM\tPL:$PL\tLB:$LB\tPU:$PU" $index $R1 $R2 > 101228_I433_FC812MDABXX_HUMrmoXDTABAPEI.sam
+    not working 
+    
+    .............................................
+    R1="$HOME/NGS2_Project/first_sample_data/SRR8241116.1_1.fixed.fastq"
+    R2="$HOME/NGS2_Project/first_sample_data/SRR8241116.1_2.fixed.fastq"
+    index="$HOME/NGS2_Project/bwa_align/bwaIndex/Homo_sapiens.GRCh38.cds.all.fa"
+    SM="Proband II-1"
+    LB="HUMrmoXDTABAPEI-1"
+    PL="Illumina"
+    RGID="FC812MDABXX"
+    PU=$RGID.$LB
+     bwa mem -t 4 -M -R "@RG\tID:$RGID\tSM:$SM\tPL:$PL\tLB:$LB\tPU:$PU" $index $R1 $R2 > 101228_I433_FC812MDABXX_HUMrmoXDTABAPEI.sam
+     this code is working 
+     ............................................................
+     for samfile in *.sam;do
+  sample=${samfile%.sam}
+  samtools view -hbo $sample.bam $samfile
+  samtools sort $sample.bam -o $sample.sorted.bam
+done
+...........................................................
+# Install Picard tools
+conda install -c bioconda picard 
+picard_path=$CONDA_PREFIX/share/picard-* ## 2.21.7-0
+
+
+# merge the replicates
+java  -Xmx2g -jar $picard_path/picard.jar MergeSamFiles I=BD143_TGACCA_L005.sorted.bam I=BD143_TGACCA_L006.sorted.bam OUTPUT=BD143_TGACCA_merged.sorted.bam
+
+# check for the changes in the header
+samtools view -H BD143_TGACCA_L005.sorted.bam
+samtools view -H BD143_TGACCA_L006.sorted.bam
+samtools view -H BD143_TGACCA_merged.sorted.bam
+
+# remove the individual replicates
+rm BD143_TGACCA_L00*.sorted.bam 
+ didnt use it 
+ ......................................................
+ for bamFile in *.sorted.bam;do
+  output=${bamFile%.sorted.bam}
+  samtools depth $bamFile | awk '{{sum+=$3}} END {{print "Average = ",sum/NR, "No of covered Nuc = ", NR}}' > $output.cov
+  samtools flagstat $bamFile > $output.stat
+done
+#work 
+.................................................
+
+#Mark duplicate
+for sample in *.sorted.bam;do
+  name=${sample%.sorted.bam}
+  java  -Xmx2g -jar $picard_path/picard.jar MarkDuplicates INPUT=$sample OUTPUT=$name.dedup.bam METRICS_FILE=$name.metrics.txt;
+done 
+#work
+.................................................................
+#Install GATK
+conda install -c bioconda gatk4 
+indexing
+# samples
+for sample in *.dedup.bam;do
+  #name=${sample%.dedup.bam}
+  java -Xmx2g -jar $picard_path/picard.jar BuildBamIndex VALIDATION_STRINGENCY=LENIENT INPUT=$sample
+done 
+#work 
+.......................................................
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     
   
   
  
