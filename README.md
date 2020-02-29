@@ -1,4 +1,12 @@
 # ngs2-project-
+
+we have 3 samples with that meta data information 
+                      Run             sample name     age   librarry name       sex 
+   first sample      SRR8241115    Proband II-1        40   HUMrmoXDTABAPEI-1     male 
+Shimaa_2nd sample  SRR8241113       Patient III-9       32    HUMrmoXDTABAPEI-11   male 
+Third sample      SRR8241116          Patient III-3    23    HUMrmoXDTABAPEI-11   femal 
+
+
 First sample done by Eman....(ID=...)
 2nd sample done by Shimaa Tawfeeq Abdallah Omara (ID=192060)
 Third sample done by Yomna....(ID=...)
