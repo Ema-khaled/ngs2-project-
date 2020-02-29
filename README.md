@@ -38,6 +38,9 @@ there is  two files, the first one is for the script that i used (third sample) 
 1-Shimaa_2nd sample
 2-Shimaa_fastqc_multiqc_report
 3-Shimaa_statsSummaryFile
-4-Shimaa_Sam
-5-Shimaa_Bam
-6-Issues met Shimaa are serially numbered from First to 8th 
+4-Shimaa_SRR8241113_1.pe.trim.fastq
+4-Shimaa_SRR8241113_2.pe.trim.fastq
+5-some file like Shimaa_SRR8241113.sam, Shimaa_SRR8241113.bam, Shimaa_SRR8241113.sorted.bam, and sam will be sent via mail as most of the files are larger than 25MB (the default ubload value of github)
+5-Shimaa_Visualize mapping using tview in samtools
+6-Shimaa_SRR8241113.vcf
+10-Issues met Shimaa 
