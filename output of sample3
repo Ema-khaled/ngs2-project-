@@ -40,5 +40,18 @@ file:///C:/Users/Lenovo/Downloads/multiqc_report.html
  #first filter <<<< remove indels>> 
  wc SNPs_only.recode.vcf 
  185547   855948 18040272
+ #explore allele freq.  
+ less srafreq.frq
+ CHROM   POS     N_ALLELES       N_CHR   {ALLELE:FREQ}
+ENST00000390435.1       152     2       2       A:0     C:1                   
+ENST00000390435.1       163     2       2       T:0     C:1          
+ENST00000390435.1       238     2       2       A:0     G:1
+ENST00000390435.1       249     2       2       G:0     A:1
+ENST00000390435.1       282     2       2       T:0     C:1
+ENST00000390435.1       290     2       2       A:0     G:1
+ENST00000379435.3       346     2       2       A:0.5   T:0.5
+ENST00000633092.1       148     2       2       A:0.5   G:0.5
+ENST00000633092.1       183     2       2       C:0.5   G:0.5
+
  
 
