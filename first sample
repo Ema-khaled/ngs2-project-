@@ -14,9 +14,13 @@ then from sra as sra format and then convert it to fastq
 # apear just one fastaq file  
 # search on Biostar for that issue resulting after several terying to use thi code  using that link  https://www.biostars.org/p/376434/
  
-fastq-dump --split-files SRR8241115 
+fastq-dump --split-files SRR8241115  
+ fastq-dump --split-3 SRR8241115 
 # so i downlode the samples again from  sra data acess with 2 links 
 # and convert it also to fastaq using fastq-dump  
+..................
+cat myfile
+sed 's/test/another test/' myfile 
 
 
 #download sample
@@ -39,7 +43,16 @@ fastq-dump --split-files SRR8241115
 TTTTTTATGGAAGGGGTGCGGACACATCTCCAATATCCAATTTTATAATGTTTCATTAAGAAAATAGGATTTTCGTGACAGGGTTTAAAC
 +SRR8241115.1.1 B812MDABXX:8:1:3839:183285 length=90
 FFFFFFFFFEFFFFFF*D:BACDDCFDFECFFE;BDFEAFBFFFEEBFFE?FF0:>A7A?AF;ED@*AA,>7<7;;;>B###########
-@SRR8241115.2.1 B812MDABXX:8:1:3921:183304 length=90
+@SRR8241115.2.1 B812MDABXX:8:1:3921:183304 length=90  
+
+
+(ngs1) ngs@bioinfo_nu:~/NGS2_Project/first_sample_data$ head SRR8241115_2.fastq 
+@SRR8241115.1.2 B812MDABXX:8:1:3839:183285 length=90
+CCTAGCACAGTGGCATTCTATACAAAATACTGTACTCCCTCATCAGGTGAATACAGTCTCCCTTAATCCTGAAGCTGATGCAATTGTGTG
++SRR8241115.1.2 B812MDABXX:8:1:3839:183285 length=90
+HHHHHHFHHHCHHHHHHHHGHGHEFGDGDFHCDHHHHHFHHHHHBEE@EEGEBDGHFHHFHHGHHHEBHHFEF6BA;5=DD?DDF@2A.D
+@SRR8241115.2.2 B812MDABXX:8:1:3921:183304 length=90
+
 
    
    
@@ -119,7 +132,33 @@ for sample in *.dedup.bam;do
   java -Xmx2g -jar $picard_path/picard.jar BuildBamIndex VALIDATION_STRINGENCY=LENIENT INPUT=$sample
 done 
 #work 
-.......................................................
+....................................................... 
+wget ftp://ftp.ensembl.org/pub/release-99/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_rm.chromosome.12.fa.gz 
+gunzip ftp://ftp.ensembl.org/pub/release-99/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_rm.chromosome.12.fa.gz 
+,,,,,,,,,,,,,,,,,,,,,,,,,,,
+wget ftp://ftp.ensembl.org/pub/release-99/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa.gz  
+gun zip ftp://ftp.ensembl.org/pub/release-99/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa.gz
+ln -s ~/NGS2_Project/first_sample_data/Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa
+bwaIndex$ bwa index -a bwtsw Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa
+
+.............
+R1="$HOME/NGS2_Project/first_sample_data/SRR8241116.1_1.fixed.fastq"
+    R2="$HOME/NGS2_Project/first_sample_data/SRR8241116.1_2.fixed.fastq"
+    index="$HOME/NGS2_Project/bwa_align/bwaIndex/Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa"
+    SM="Proband II-1"
+    LB="HUMrmoXDTABAPEI-1"
+    PL="Illumina"
+    RGID="FC812MDABXX"
+    PU=$RGID.$LB
+     bwa mem -t 4 -M -R "@RG\tID:$RGID\tSM:$SM\tPL:$PL\tLB:$LB\tPU:$PU" $index $R1 $R2 > 1FC812MDABXX_HUMrmoXDTABAPEI.sam 
+     the diffrent paired read 
+     ..................
+     conda install -c bioconda fastq-pair
+     fastq_pair SRR8241115_1.fastq SRR8241115_2.fastq
+
+
+
+ibdexing 
 
 
 
