@@ -161,7 +161,17 @@ R1="$HOME/NGS2_Project/first_sample_data/SRR8241116.1_1.fixed.fastq"
 ibdexing 
 
 
+NGS2_Project/first_sample_data/SRR8241115_2.fastq
 
+    R1="$HOME/NGS2_Project/first_sample_data/SRR8241115_1.fastq"
+    R2="$HOME/NGS2_Project/first_sample_data/SRR8241115_2.fastq"
+    index="$HOME/NGS2_Project/bwa_align/bwaIndex/Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa"
+    SM="Proband II-1"
+    LB="HUMrmoXDTABAPEI-1"
+    PL="Illumina"
+    RGID="FC812MDABXX"
+    PU=$RGID.$LB
+     bwa mem -t 4 -M -R "@RG\tID:$RGID\tSM:$SM\tPL:$PL\tLB:$LB\tPU:$PU" $index $R1 $R2 > 1FC812MDABXX_HUMrmoXDTABAPEI.sam 
 
 
 
