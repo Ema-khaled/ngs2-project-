@@ -79,8 +79,8 @@ vcftools --vcf SRR8241116.1.vcf  --freq --out srafreq
 vcftools --vcf SRR8241116.1.vcf --snp rs35399062 --recode --recode-INFO-all --stdout > rs35399062.vcf
 #no results 
 #i tried several SNPs >> but there is no results 
-
-
+#from the abstract of the bioproject << We identified two families with heterozygous missense mutation (p.R385G, p.R715W)>> 
+vcftools --vcf SRR8241116.1.vcf --snp p.R385G --recode --recode-INFO-all --stdout > p.R385G.vcf
 
 
 
