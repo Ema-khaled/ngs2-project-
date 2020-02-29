@@ -40,7 +40,5 @@ file:///C:/Users/Lenovo/Downloads/multiqc_report.html
  #first filter <<<< remove indels>> 
  wc SNPs_only.recode.vcf 
  185547   855948 18040272
- #filtering through chromosome number 
- wc chr17 
- 111075  111228 4821603
+ 
 
