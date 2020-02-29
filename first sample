@@ -186,7 +186,16 @@ bwaIndex$ bwa index -a bwtsw Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa
     PL="Illumina"
     RGID="FC812MDABXX"
     PU=$RGID.$LB
-     bwa mem -t 4 -M -R "@RG\tID:$RGID\tSM:$SM\tPL:$PL\tLB:$LB\tPU:$PU" $index $R1 $R2 > 1FC812MDABXX_HUMrmoXDTABAPE
+     bwa mem -t 4 -M -R "@RG\tID:$RGID\tSM:$SM\tPL:$PL\tLB:$LB\tPU:$PU" $index $R1 $R2 > 1FC812MDABXX_HUMrmoXDTABAPE,sam 
+     
+     explor sam file 
+     (ngs1) root@bioinfo_nu:~/NGS2_Project/first_sample_data# head 1FC812MDABXX_HUMrmoXDTABAPEI.sam
+@SQ     SN:20   LN:64444167
+@RG     ID:FC812MDABXX  SM:Proband II-1 PL:Illumina     LB:HUMrmoXDTABAPEI-1    PU:FC812MDABXX.HUMrmoXDTABAPEI-1
+@PG     ID:bwa  PN:bwa  VN:0.7.17-r1188 CL:bwa mem -t 4 -M -R @RG\tID:FC812MDABXX\tSM:Proband II-1\tPL:Illumina\tLB:HUMrmoXDTABAPEI-1\tPU:FC812MDABXX.HUMrmoXDTABAPEI-1 /home/ngs/NGS2_Project/bwa_align/bwaIndex/Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa /home/ngs/NGS2_Project/first_sample_data/SRR8241115_1.fastq /home/ngs/NGS2_Project/first_sample_data/SRR8241115_2.fastq
+SRR8241115.1    77      *       0       0       *       *       0       0       TTTTTTATGGAAGGGGTGCGGACACATCTCCAATATCCAATTTTATAATGTTTCATTAAGAAAATAGGATTTTCGTGACAGGGTTTAAAC   FFFFFFFFFEFFFFFF*D:BACDDCFDFECFFE;BDFEAFBFFFEEBFFE?FF0:>A7A?AF;ED@*AA,>7<7;;;>B###########  AS:i:0   XS:i:0  RG:Z:FC812MDABXX
+SRR8241115.1    141     *       0       0       *       *       0       0       CCTAGCACAGTGGCATTCTATACAAAATACTGTACTCCCTCATCAGGTGAATACAGTCTCCCTTAATCCTGAAGCTGATGCAATTGTGTG   HHHHHHFHHHCHHHHHHHHGHGHEFGDGDFHCDHHHHHFHHHHHBEE@EEGEBDGHFHHFHHGHHHEBHHFEF6BA;5=DD?DDF@2A.D  AS:i:0   XS:i:0  RG:Z:FC812MDABXX
+SRR8241115.2    77      *       0       0       *       *       0       0       GTAGTCGTGACTGAATAAAGAAAGCAAAAGCCTGTCTCTGCCTCCTCCATAGGGGTTTTGATGAGGGCGACGGCTGCATTTAGGGAGGAG   HGHGHHFEHHHHFGDGGHEEHGHHHHHGCFCFE/DCDDCEHEBAEECF=F@ECE=>DAB9:>:5=AB(D<AB?@;D=AAB##########  A
 ................................................................
 6 -#generate & sort BAM file 
 
@@ -197,6 +206,28 @@ bwaIndex$ bwa index -a bwtsw Homo_sapiens.GRCh38.dna_rm.chromosome.20.fa
 done
 
 ...............................................
+7-
+#mapping QC
+for bamFile in *.sorted.bam;do
+  output=${bamFile%.sorted.bam}
+  samtools depth $bamFile | awk '{{sum+=$3}} END {{print "Average = ",sum/NR, "No of covered Nuc = ", NR}}' > $output.cov
+  samtools flagstat $bamFile > $output.stat
+done
+result of stat file 
+52764413 + 0 in total (QC-passed reads + QC-failed reads)
+4201 + 0 secondary
+0 + 0 supplementary
+0 + 0 duplicates
+2067531 + 0 mapped (3.92% : N/A)
+52760212 + 0 paired in sequencing
+26380106 + 0 read1
+26380106 + 0 read2
+1814790 + 0 properly paired (3.44% : N/A)
+1844486 + 0 with itself and mate mapped
+218844 + 0 singletons (0.41% : N/A)
+
+.........................................................
+
 
 
 
